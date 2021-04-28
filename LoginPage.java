@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 import javax.swing.*;
 
@@ -93,6 +92,7 @@ public class LoginPage extends JFrame{
 					PreparedStatement st = c.prepareStatement(query);
 					
 					String username = jTextField.getText().toString();
+					@SuppressWarnings("deprecation")
 					String passw = jTextField1.getText().toString();
 					
 					jTextField.setText(null);
@@ -105,7 +105,9 @@ public class LoginPage extends JFrame{
 						String pass = rs.getString(4);
 						if(username.equals(user1) && passw.equals(pass)) {
 							found = true;
-							JOptionPane.showMessageDialog(null, "Login Successfull...");
+//							JOptionPane.showMessageDialog(null, "Login Successfull...");
+							dispose();
+							new Staff_Login_After_Page();
 						}
 					}
 					
@@ -143,11 +145,6 @@ public class LoginPage extends JFrame{
 		setResizable(false);
 		setBounds(200, 200, 500, 300);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	}
-
-	public static void main(String[] args) {
-		
-		new LoginPage();
 	}
 
 }

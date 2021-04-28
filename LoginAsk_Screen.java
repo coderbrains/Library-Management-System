@@ -45,8 +45,4 @@ public class LoginAsk_Screen extends JFrame implements ActionListener{
 		}
 		
 	}
-	
-	public static void main(String[] ar) {
-		new LoginAsk_Screen();
-	}
 }
