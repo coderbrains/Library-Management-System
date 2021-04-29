@@ -17,7 +17,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 	//-------> Start
 	
 	JMenuBar menuBar;
-	JButton addStudent, lookStudent, returnBook, issueBook, removeStudent;
+	JButton addStudent, lookStudent, returnBook, issueBook, removeStudent, addBook;
 	JLabel jLabel;
 	Container c;
 	
@@ -44,6 +44,10 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		lookStudent = new JButton("Look Student");
 		returnBook = new JButton("Return Book");
 		issueBook = new JButton("Issue Book");
+		addBook = new JButton("ADD BOOK");
+		removeStudent = new JButton("Remove Student");
+		
+		
 		
 
 		Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
@@ -51,6 +55,8 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		lookStudent.setCursor(cursor);
 		returnBook.setCursor(cursor);
 		issueBook.setCursor(cursor);
+		removeStudent.setCursor(cursor);
+		addBook.setCursor(cursor);
 		
 		Font f = new Font("aerial", Font.BOLD, 22);
 		
@@ -58,24 +64,30 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		lookStudent.setFont(f);
 		returnBook.setFont(f);
 		issueBook.setFont(f);
+		removeStudent.setFont(f);
+		addBook.setFont(f);
+		
+		
 		
 		menuBar.add(addStudent);
 		menuBar.add(returnBook);
 		menuBar.add(issueBook);
 		menuBar.add(lookStudent);
+		menuBar.add(removeStudent);
+		menuBar.add(addBook);
 		
 		
-		add(menuBar, BorderLayout.PAGE_START);
+		c.add(menuBar, BorderLayout.PAGE_START);
 		
 		addStudent.addActionListener(this);
 		returnBook.addActionListener(this);
 		issueBook.addActionListener(this);
 		lookStudent.addActionListener(this);
+		returnBook.addActionListener(this);
+		addBook.addActionListener(this);
 		
-//		setBounds(0	, 0, 1000, 700);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
-		setResizable(false);
 		setTitle("Hello Staff");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -859,9 +871,8 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 			Font font1 = new  Font("arial", Font.BOLD, 20);
 			title.setBounds(500, 40, 300, 30);
 			title.setFont(font1);
-			jInternalFrame.add(title);
 			
-			jInternalFrame.setBounds(50, 50, 200, 300);
+			jInternalFrame.add(title);
 			jInternalFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
 			jInternalFrame.setVisible(true);	
 			validate();
@@ -870,9 +881,318 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		
 		//Look student click stops here..........
 		
-		if(e.getSource() == returnBook) {
+		
+		//Adding a book starts here ----------->
+		
+		if(e.getSource() == addBook) {
 			
+			if(jInternalFrame != null) {
+				jInternalFrame.dispose();
+			}
+			
+			addBook.setEnabled(false);
+			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
+			jInternalFrame.setLayout(null);
+			jInternalFrame.setTitle("ADD A STUDENT");
+			add(jInternalFrame, BorderLayout.CENTER);
+			
+			jInternalFrame.addInternalFrameListener(new InternalFrameListener() {
+				
+				@Override
+				public void internalFrameOpened(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameIconified(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameDeiconified(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameDeactivated(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameClosing(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameClosed(InternalFrameEvent e) {
+					addBook.setEnabled(true);
+					
+				}
+				
+				@Override
+				public void internalFrameActivated(InternalFrameEvent e) {
+					
+					JTextField id = new JTextField();
+					id.setBounds(500, 100, 150, 50);
+					
+					Font f = new Font("arial", Font.BOLD, 30);
+					id.setFont(f);
+				
+					jInternalFrame.add(id);
+					
+					JButton show = new JButton();
+					show.setText("SHOW DETAILS");
+					show.setBounds(646, 100, 148, 49);
+					jInternalFrame.add(show);
+					
+					title = new JLabel();
+					title.setText("ENTER THE BOOK ID : ");
+					Font font1 = new  Font("arial", Font.BOLD, 20);
+					title.setBounds(500, 40, 300, 30);
+					title.setFont(font1);
+					jInternalFrame.add(title);
+					
+					show.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							
+							if(id.getText().toString().equals("")) {
+								JOptionPane.showMessageDialog(null, "Enter a BookId first");
+							}else {
+								
+								
+								boolean exception = false;
+								try {
+									
+									Integer.parseInt(id.getText().toString());
+								}catch(NumberFormatException Nfe) {
+									exception = true;
+									JOptionPane.showMessageDialog(null, "Please Enter a Integer BookId");
+									id.setText(null);
+								}
+								
+								if(!exception) {
+									
+									
+									try {
+										
+										
+										Class.forName("com.mysql.cj.jdbc.Driver");
+										Login_through_credentails rl = new Login_through_credentails();
+										Connection c = DriverManager.getConnection(rl.url, rl.user, rl.pass);
+										int bookId = Integer.parseInt(id.getText().toString().trim());
+										String query = "select * from book where id = ?";
+										PreparedStatement st = c.prepareStatement(query);
+										st.setString(1, id.getText().toString());
+										ResultSet rs = st.executeQuery();
+										
+										
+										if(rs.next()) {
+											id.setText(null);
+											JOptionPane.showMessageDialog(null, "This book is already present :" + "\n" +"Id - " + rs.getString("id") + "\n"
+													
+										+"Name - "	+ rs.getString("name") + "\n" +"Author - " + rs.getString("author") + "\n" +
+											"ISBN -  - " + rs.getString("isbn") + "\n" + "Publisher - "  + rs.getString("publisher")
+											+"\n" + "Price - " + rs.getString("price"));
+
+										}else {
+											
+											
+											int result = JOptionPane.showConfirmDialog(null, "Do you want to add this book", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+											
+											if(result == JOptionPane.YES_OPTION) {
+												
+												//Adding different fields for the addition of new book
+												id.setVisible(false);
+												show.setVisible(false);
+												title.setVisible(false);
+												
+												Font f = new Font("aerial", Font.BOLD, 25);
+												
+												
+												JLabel another = new JLabel();
+												another.setText("FILL THE BELOW INFO TO ADD THE BOOK");
+												another.setBounds(400, 50, 550, 50);
+												another.setFont(f);
+												jInternalFrame.add(another, BorderLayout.CENTER);
+												another.setVisible(true);
+												
+												JLabel name = new JLabel();
+												name.setText("Book Name - ");
+												name.setFont(f);
+												name.setBounds(350, 150, 200, 30);
+												jInternalFrame.add(name);
+												
+												JTextField nameAdd = new JTextField();
+												nameAdd.setBounds(570, 150, 250	, 30);
+//												nameAdd.setFont(f);
+												jInternalFrame.add(nameAdd);
+												
+												JLabel authorName = new JLabel();
+												authorName.setText("Writter name - ");
+												authorName.setFont(f);
+												authorName.setBounds(350, 200, 200, 30);
+												jInternalFrame.add(authorName);
+												
+												JTextField authorAdd = new JTextField();
+												authorAdd.setBounds(570, 200, 250	, 30);
+//												authorAdd.setFont(f);
+												jInternalFrame.add(authorAdd);
+												
+												JLabel addisbn = new JLabel();
+												addisbn.setText("Isbn no. - ");
+												addisbn.setFont(f);
+												addisbn.setBounds(350, 250, 200, 30);
+												jInternalFrame.add(addisbn);
+												
+												JTextField isbnAdd = new JTextField();
+												isbnAdd.setBounds(570, 250, 250	, 30);
+//												isbnAdd.setFont(f);
+												jInternalFrame.add(isbnAdd);
+												
+												JLabel addprice = new JLabel();
+												addprice.setText("Price - ");
+												addprice.setFont(f);
+												addprice.setBounds(350, 300, 200, 30);
+												jInternalFrame.add(addprice);
+												
+												JTextField priceAdd = new JTextField();
+												priceAdd.setBounds(570, 300, 250	, 30);
+//												priceAdd.setFont(f);
+												jInternalFrame.add(priceAdd);
+												
+												
+												JLabel publication = new JLabel();
+												publication.setText("Publication - ");
+												publication.setFont(f);
+												publication.setBounds(350, 350, 250, 30);
+												jInternalFrame.add(publication);
+												
+												JTextField publicationAdd = new JTextField();
+												publicationAdd.setBounds(570, 350, 250	, 30);
+//												publicationAdd.setFont(f);
+												jInternalFrame.add(publicationAdd);
+												
+												JButton addition = new JButton();
+												addition.setText("ADD BOOK");
+												addition.setBounds(900, 450, 150, 50);
+												jInternalFrame.add(addition);
+												
+												
+												validate();
+												
+												
+												addition.addActionListener(new ActionListener() {
+													
+													@Override
+													public void actionPerformed(ActionEvent e) {
+														
+														if(nameAdd.getText().toString().equals("")) {
+															JOptionPane.showMessageDialog(null, "Please Enter the name field");
+														}else if(authorAdd.getText().toString().equals("")) {
+															JOptionPane.showMessageDialog(null, "Please Enter the Author name");
+														}else if(isbnAdd.getText().toString().equals("")) {
+															JOptionPane.showMessageDialog(null, "Please Enter an ISBN number first  ");
+														}else if(priceAdd.getText().toString().equals("")) {
+															JOptionPane.showMessageDialog(null, "Please Enter The price of the book");
+														}else if(publicationAdd.getText().toString().equals("")) {
+															JOptionPane.showMessageDialog(null, "Please Enter The Publication name");
+														}else {
+															
+															String query = "insert into book(id, name, author, isbn,publisher,price)"
+																	+ "values(?,?,?,?,?,?)";
+															try {
+																
+																PreparedStatement st = c.prepareStatement(query);
+																st.setString(1, id.getText().toString());
+																st.setString(2, nameAdd.getText().toString());
+																st.setString(3, authorAdd.getText().toString());
+																st.setString(4, isbnAdd.getText().toString());
+																st.setString(5, publicationAdd.getText().toString());
+																st.setString(6, priceAdd.getText().toString());
+																st.executeUpdate();
+																JOptionPane.showMessageDialog(null, "Successfully Added");
+																
+																
+																nameAdd.setText(null);
+																authorAdd.setText(null);
+																isbnAdd.setText(null);
+																priceAdd.setText(null);
+																publicationAdd.setText(null);
+																
+																
+																
+																
+																
+																nameAdd.setVisible(false);
+																authorAdd.setVisible(false);
+																isbnAdd.setVisible(false);
+																priceAdd.setVisible(false);
+																publicationAdd.setVisible(false);
+																
+																name.setVisible(false);
+																authorName.setVisible(false);
+																addisbn.setVisible(false);
+																addprice.setVisible(false);
+																publication.setVisible(false);
+																
+																addition.setVisible(false);
+																
+																another.setVisible(false);
+																
+																title.setVisible(true);
+																show.setVisible(true);
+																id.setText(null);
+																id.setVisible(true);																
+															
+																
+															} catch (Exception e1) {
+
+																JOptionPane.showMessageDialog(null, "An erropr occured");
+															}
+														}
+														
+													}
+												});
+												
+											}else {
+												id.setText(null);
+											}
+												
+										
+										}
+										
+										c.close();
+										st.close();
+										
+									} catch (Exception e1) {
+										id.setText(null);
+										JOptionPane.showMessageDialog(null, "Some Error occured....");
+									}
+									
+								}
+							}
+							
+						}
+					});
+					
+				}
+			});
+
+			jInternalFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+			jInternalFrame.setVisible(true);	
+			validate();
+					
 		}
+		
+	//----------------------->Adding a book button clicked stops
 	}
 	
 	//Button Clicked stops <-------------
