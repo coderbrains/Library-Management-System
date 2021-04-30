@@ -17,9 +17,11 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 	//-------> Start
 	
 	JMenuBar menuBar;
-	JButton addStudent, lookStudent, returnBook, issueBook, removeStudent, addBook;
+	JButton addStudent, lookStudent, returnBook, issueBook, removeStudent, addBook, removeBook, seeAll;
 	JLabel jLabel;
 	Container c;
+	
+	Boolean searchStudentId;
 	
 	JLabel title, address, name, mob, gender, Dob, email, password, message;
 	JTextField nam, mobi, e_mail, pass;
@@ -44,8 +46,10 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		lookStudent = new JButton("Look Student");
 		returnBook = new JButton("Return Book");
 		issueBook = new JButton("Issue Book");
-		addBook = new JButton("ADD BOOK");
+		addBook = new JButton("Add Book");
 		removeStudent = new JButton("Remove Student");
+		removeBook = new JButton("Remove Book");
+		seeAll = new JButton("See All");
 		
 		
 		
@@ -57,6 +61,8 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		issueBook.setCursor(cursor);
 		removeStudent.setCursor(cursor);
 		addBook.setCursor(cursor);
+		removeBook.setCursor(cursor);
+		seeAll.setCursor(cursor);
 		
 		Font f = new Font("aerial", Font.BOLD, 22);
 		
@@ -66,6 +72,8 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		issueBook.setFont(f);
 		removeStudent.setFont(f);
 		addBook.setFont(f);
+		removeBook.setFont(f);
+		seeAll.setFont(f);
 		
 		
 		
@@ -75,6 +83,8 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		menuBar.add(lookStudent);
 		menuBar.add(removeStudent);
 		menuBar.add(addBook);
+		menuBar.add(removeBook);
+		menuBar.add(seeAll);
 		
 		
 		c.add(menuBar, BorderLayout.PAGE_START);
@@ -85,10 +95,14 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		lookStudent.addActionListener(this);
 		returnBook.addActionListener(this);
 		addBook.addActionListener(this);
+		removeBook.addActionListener(this);
+		removeStudent.addActionListener(this);
+		seeAll.addActionListener(this);
 		
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
 		setTitle("Hello Staff");
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
@@ -366,11 +380,13 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 										
 										message.setText("Registration Is SuccessFull");
 										message.setForeground(Color.GREEN);
+										JOptionPane.showMessageDialog(null, "Registartion is successfull");
 										
 									} catch (Exception e1) {
 										
 										
 										message.setText("Duplicate Entry of e-mail");
+										JOptionPane.showMessageDialog(null, "Duplicate Entry of E-mail.");
 									}
 									
 									details.setText("Name - " + nam.getText() + "\n" +  "Mobile - " + mobi.getText() +"\n" +"Address - " + add.getText()
@@ -391,6 +407,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 								
 							}catch(NumberFormatException nfe) {
 								message.setText("Please Fill a Valid Mobile number");
+								JOptionPane.showMessageDialog(null, "Please enter 10 digit mobile number without country code");
 								message.setForeground(Color.RED);
 							}
 							
@@ -665,6 +682,14 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 												hintpasswordChange.setVisible(false);
 												passChange.setVisible(false);
 												changepasswordButton.setVisible(false);
+												changeaddressButton.setVisible(false);
+												addChange.setVisible(false);
+												Dob.setVisible(false);
+												changedate.setVisible(false);
+												day.setVisible(false);
+												year.setVisible(false);
+												month.setVisible(false);
+												hintaddChange.setVisible(false);
 												
 												
 											}
@@ -987,7 +1012,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 										Class.forName("com.mysql.cj.jdbc.Driver");
 										Login_through_credentails rl = new Login_through_credentails();
 										Connection c = DriverManager.getConnection(rl.url, rl.user, rl.pass);
-										int bookId = Integer.parseInt(id.getText().toString().trim());
+										Integer.parseInt(id.getText().toString().trim());
 										String query = "select * from book where id = ?";
 										PreparedStatement st = c.prepareStatement(query);
 										st.setString(1, id.getText().toString());
@@ -1069,6 +1094,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 												jInternalFrame.add(priceAdd);
 												
 												
+												
 												JLabel publication = new JLabel();
 												publication.setText("Publication - ");
 												publication.setFont(f);
@@ -1110,6 +1136,9 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 																	+ "values(?,?,?,?,?,?)";
 															try {
 																
+																Class.forName("com.mysql.cj.jdbc.Driver");
+																Login_through_credentails l = new Login_through_credentails();
+																Connection c = DriverManager.getConnection(l.url, l.user, l.pass);
 																PreparedStatement st = c.prepareStatement(query);
 																st.setString(1, id.getText().toString());
 																st.setString(2, nameAdd.getText().toString());
@@ -1192,9 +1221,712 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 					
 		}
 		
-	//----------------------->Adding a book button clicked stops
-	}
+	//----------------------->Removing a book button clicked stops
+		
+		if(e.getSource() == removeBook) {
+			
+			if(jInternalFrame != null) {
+				jInternalFrame.dispose();
+			}
+			
+			removeBook.setEnabled(false);
+			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
+			jInternalFrame.setLayout(null);
+			jInternalFrame.setTitle("REMOVE A BOOK");
+			add(jInternalFrame, BorderLayout.CENTER);
+			
+			jInternalFrame.addInternalFrameListener(new InternalFrameListener() {
+				
+				@Override
+				public void internalFrameOpened(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameIconified(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameDeiconified(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameDeactivated(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameClosing(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameClosed(InternalFrameEvent e) {
+					removeBook.setEnabled(true);
+					
+				}
+				
+				@Override
+				public void internalFrameActivated(InternalFrameEvent e) {
+					
+					JTextField id = new JTextField();
+					id.setBounds(500, 100, 150, 50);
+					
+					Font f = new Font("arial", Font.BOLD, 30);
+					id.setFont(f);
+				
+					jInternalFrame.add(id);
+					
+					JButton show = new JButton();
+					show.setText("REMOVE BOOK");
+					show.setBounds(646, 100, 146, 49);
+					jInternalFrame.add(show);
+					
+					title = new JLabel();
+					title.setText("ENTER THE BOOK ID : ");
+					Font font1 = new  Font("arial", Font.BOLD, 20);
+					title.setBounds(500, 40, 300, 30);
+					title.setFont(font1);
+					jInternalFrame.add(title);
+					
+					
+					show.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+
+							if(id.getText().toString().equals("")) {
+								JOptionPane.showMessageDialog(null, "Enter a BookId first");
+							}else {
+								
+								
+								boolean exception = false;
+								try {
+									
+									Integer.parseInt(id.getText().toString());
+								}catch(NumberFormatException Nfe) {
+									exception = true;
+									JOptionPane.showMessageDialog(null, "Please Enter a Integer BookId");
+									id.setText(null);
+								}if(!exception) {
+									
+									try {
+									
+										Class.forName("com.mysql.cj.jdbc.Driver");
+										Login_through_credentails rl = new Login_through_credentails();
+										Connection c = DriverManager.getConnection(rl.url, rl.user, rl.pass);
+										Integer.parseInt(id.getText().toString().trim());
+										String query = "select * from book where id = ?";
+										PreparedStatement st = c.prepareStatement(query);
+										st.setString(1, id.getText().toString());
+										ResultSet rs = st.executeQuery();
+										
+										
+										if(rs.next()) {
+											
+											
+										int result = JOptionPane.showConfirmDialog(null, "Is this the book you want to Remove :" + "\n" +"Id - " + rs.getString("id") + "\n"
+													
+										+"Name - "	+ rs.getString("name") + "\n" +"Author - " + rs.getString("author") + "\n" +
+											"ISBN -  - " + rs.getString("isbn") + "\n" + "Publisher - "  + rs.getString("publisher")
+											+"\n" + "Price - " + rs.getString("price"), "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+										
+										
+										if(result == JOptionPane.YES_OPTION) {
+											
+											query = "delete from book where id = ?";
+											st = c.prepareStatement(query);
+											st.setString(1, id.getText().toString());
+											st.executeUpdate();
+											
+											id.setText(null);
+											
+											JOptionPane.showMessageDialog(null, "This book has been removed from the "
+													+ "Library");
+											
+											c.close();
+											st.close();
+											
+											
+										}else {
+											JOptionPane.showMessageDialog(null, "No Book has been removed from the Libraray");
+											id.setText(null);
+										}
+
+										}else {
+											JOptionPane.showMessageDialog(null, "This book is not present in the Library"
+													+"\n" + "Please check the BookId first");
+											id.setText(null);
+										}
+										
+										
+										
+									}catch (Exception e1) {
+										id.setText(null);
+										JOptionPane.showMessageDialog(null, "Some Error occured....");
+									}
+									
+								}
+							
+								
+							}
+							
+							
+						}
+					});
+					
+				}
+				
+				
+		
+			});
+			
+			jInternalFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+			jInternalFrame.setVisible(true);	
+			validate();
+		}
+		
+		//-----------> Remove book handled completed here
+		
+		
+		
+		//<----------------- remove Student button click starts here....
+		
+		if(e.getSource() == removeStudent) {
+			
+			
+			if(jInternalFrame != null) {
+				jInternalFrame.dispose();
+			}
+			
+			removeStudent.setEnabled(false);
+			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
+			jInternalFrame.setLayout(null);
+			jInternalFrame.setTitle("REMOVE A STUDENT FROM THE LIBRARY");
+			add(jInternalFrame, BorderLayout.CENTER);
+			
+			jInternalFrame.addInternalFrameListener(new InternalFrameListener() {
+				
+				@Override
+				public void internalFrameOpened(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameIconified(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameDeiconified(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameDeactivated(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameClosing(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameClosed(InternalFrameEvent e) {
+					removeStudent.setEnabled(true);
+					
+				}
+				
+				@Override
+				public void internalFrameActivated(InternalFrameEvent e) {
+					
+					JTextField id = new JTextField();
+					id.setBounds(500, 200, 150, 50);
+					
+					Font f = new Font("arial", Font.BOLD, 30);
+					id.setFont(f);
+				
+					jInternalFrame.add(id);
+					
+					JButton show = new JButton();
+					show.setText("REMOVE");
+					show.setBounds(646, 200, 146, 49);
+					jInternalFrame.add(show);
+					
+					title = new JLabel();
+					title.setText("ENTER THE STUDENT ID YOU WANT TO REMOVE FROM THE LIBRARY");
+					Font font1 = new  Font("arial", Font.BOLD, 20);
+					title.setBounds(300, 40, 800, 30);
+					title.setFont(font1);
+					jInternalFrame.add(title);
+					
+					
+					show.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+
+							if(id.getText().toString().equals("")) {
+								JOptionPane.showMessageDialog(null, "Enter a Student Id first");
+							}else {
+								
+								
+								boolean exception = false;
+								try {
+									
+									Integer.parseInt(id.getText().toString());
+								}catch(NumberFormatException Nfe) {
+									exception = true;
+									JOptionPane.showMessageDialog(null, "Please Enter a Integer Student Id");
+									id.setText(null);
+								}if(!exception) {
+									
+									try {
+									
+										Class.forName("com.mysql.cj.jdbc.Driver");
+										Login_through_credentails rl = new Login_through_credentails();
+										Connection c = DriverManager.getConnection(rl.url, rl.user, rl.pass);
+										Integer.parseInt(id.getText().toString().trim());
+										String query = "select * from student where id = ?";
+										PreparedStatement st = c.prepareStatement(query);
+										st.setString(1, id.getText().toString());
+										ResultSet rs = st.executeQuery();
+										
+										
+										if(rs.next()) {
+											
+											
+										int result = JOptionPane.showConfirmDialog(null, "Is this the student you want to Remove :" + "\n" +"Id - " + rs.getString("id") + "\n"
+													
+										+"Name - "	+ rs.getString("name") + "\n" +"Email - " + rs.getString("e_mail") + "\n" +
+											"Password -  - " + rs.getString("pass") + "\n" + "Mobile number - "  + rs.getString("mobile")
+											+"\n" + "Address - " + rs.getString("address"), "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+										
+										
+										if(result == JOptionPane.YES_OPTION) {
+											
+											query = "delete from student where id = ?";
+											st = c.prepareStatement(query);
+											st.setString(1, id.getText().toString());
+											st.executeUpdate();
+											
+											id.setText(null);
+											
+											JOptionPane.showMessageDialog(null, "This student has been removed from the "
+													+ "Library");
+											
+											c.close();
+											st.close();
+											
+											
+										}else {
+											id.setText(null);
+											JOptionPane.showMessageDialog(null, "No student is removed from the Library");
+										}
+
+										}else {
+											JOptionPane.showMessageDialog(null, "This student is not present in the Library"
+													+"\n" + "Please check the StudentId first");
+											id.setText(null);
+										}
+										
+										
+										
+									}catch (Exception e1) {
+										id.setText(null);
+										JOptionPane.showMessageDialog(null, "Some Error occured....");
+									}
+									
+								}
+							
+								
+							}
+							
+							
+						}
+					});
+					
+				}
+				
+				
+		
+			});
+			
+			jInternalFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+			jInternalFrame.setVisible(true);	
+			validate();
+			
+			
+			
+		}
+		
+		//--------------> remove Student Button clicked Stops here
+		
+		if(e.getSource() == seeAll) {
+			
+			if(jInternalFrame != null) {
+				jInternalFrame.dispose();
+			}
+			
+			seeAll.setEnabled(false);
+			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
+			
+			jInternalFrame.addInternalFrameListener(new InternalFrameListener() {
+				
+				@Override
+				public void internalFrameOpened(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameIconified(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameDeiconified(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameDeactivated(InternalFrameEvent e) {
+					seeAll.setVisible(true);
+					
+				}
+				
+				@Override
+				public void internalFrameClosing(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					seeAll.setVisible(true);
+					
+				}
+				
+				@Override
+				public void internalFrameClosed(InternalFrameEvent e) {
+					seeAll.setEnabled(true);
+					
+				}
+				
+				@Override
+				public void internalFrameActivated(InternalFrameEvent e) {
+					
+					JButton seeStudent = new JButton();
+					seeStudent.setText("SEE ALL STUDENT");
+				    seeStudent.setBounds(350, 5, 300, 35);
+				    seeStudent.setBackground(Color.CYAN);
+				    jInternalFrame.add(seeStudent);
+				    
+
+					JButton seeBooks = new JButton();
+					seeBooks.setText("SEE BOOKS IN LIBRARY");
+				    seeBooks.setBounds(700, 5, 300, 35);
+				    seeBooks.setBackground(Color.cyan);
+				    jInternalFrame.add(seeBooks);
+					
+					
+				}
+			});
+			
+			jInternalFrame.setLayout(null);
+			jInternalFrame.setTitle("ADD A STUDENT");
+			add(jInternalFrame, BorderLayout.CENTER);
+			
+			
+			jInternalFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+			jInternalFrame.setVisible(true);	
+			validate();
+			
+		}
+		
+		//------> See All button clicked handled stops here
+		
+		
+		//<--------------Issue Book button clicked starts here
+		
+		if(e.getSource() == issueBook) {
+				
+				if(jInternalFrame != null) {
+					jInternalFrame.dispose();
+				}
+				
+				removeBook.setEnabled(false);
+				jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
+				jInternalFrame.setLayout(null);
+				jInternalFrame.setTitle("ISSUE BOOK TO A STUDENT");
+				add(jInternalFrame, BorderLayout.CENTER);
+
+				
+				jInternalFrame.addInternalFrameListener(new InternalFrameListener() {
+					
+					@Override
+					public void internalFrameOpened(InternalFrameEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void internalFrameIconified(InternalFrameEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void internalFrameDeiconified(InternalFrameEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void internalFrameDeactivated(InternalFrameEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void internalFrameClosing(InternalFrameEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void internalFrameClosed(InternalFrameEvent e) {
+						
+						issueBook.setEnabled(true);
+						
+					}
+					
+					@Override
+					public void internalFrameActivated(InternalFrameEvent e) {
+						
+						
+						Font f = new Font("aerial", Font.BOLD, 25);
+						
+						
+						JLabel another = new JLabel();
+						another.setText("FILL THE BELOW INFO TO ISSUE A BOOK");
+						another.setBounds(400, 50, 550, 50);
+						another.setFont(f);
+						jInternalFrame.add(another, BorderLayout.CENTER);
+						another.setVisible(true);
+						
+						JLabel name = new JLabel();
+						name.setText("Student ID - ");
+						name.setFont(f);
+						name.setBounds(350, 150, 200, 30);
+						jInternalFrame.add(name);
+						
+						JTextField nameAdd = new JTextField();
+						nameAdd.setBounds(570, 150, 250	, 30);
+						jInternalFrame.add(nameAdd);
+						
+						JButton searchId = new JButton("Search ID");
+						searchId.setBounds(818, 150, 100, 28);
+						searchId.setBackground(Color.CYAN);
+						jInternalFrame.add(searchId);
+						
+						JLabel authorName = new JLabel();
+						authorName.setText("Book Id - ");
+						authorName.setFont(f);
+						authorName.setBounds(350, 200, 200, 30);
+						jInternalFrame.add(authorName);
+						
+						JTextField authorAdd = new JTextField();
+						authorAdd.setBounds(570, 200, 250	, 30);
+//						authorAdd.setFont(f);
+						jInternalFrame.add(authorAdd);
+						
+						JButton searchBookId = new JButton("Search Id");
+						searchBookId.setBackground(Color.CYAN);
+						searchBookId.setBounds(818, 200, 100, 30);
+						jInternalFrame.add(searchBookId);
+						
+						JLabel addisbn = new JLabel();
+						addisbn.setText("Issue date - ");
+						addisbn.setFont(f);
+						addisbn.setBounds(350, 250, 200, 30);
+						jInternalFrame.add(addisbn);
+						
+						JTextField isbnAdd = new JTextField();
+						isbnAdd.setBounds(570, 250, 250	, 30);
+//						isbnAdd.setFont(f);
+						jInternalFrame.add(isbnAdd);
+						
+						JLabel addprice = new JLabel();
+						addprice.setText("Due Date - ");
+						addprice.setFont(f);
+						addprice.setBounds(350, 300, 200, 30);
+						jInternalFrame.add(addprice);
+						
+						JTextField priceAdd = new JTextField();
+						priceAdd.setBounds(570, 300, 250, 30);
+						jInternalFrame.add(priceAdd);
+						searchStudentId = false;
+						
+						searchId.addActionListener(new ActionListener() {
+							
+							boolean exception = false;
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								
+								if(nameAdd.getText().equals("")) {
+									JOptionPane.showMessageDialog(null, "Please Enter a Id first");
+								}else {
+									
+									try {
+										Integer.parseInt(nameAdd.getText().toString());
+									}catch(NumberFormatException Nfe) {
+										exception = true;
+										nameAdd.setText(null);
+										JOptionPane.showMessageDialog(null, "Please Enter a valid Id");
+									}
+									
+								}
+								
+								if(!exception) {
+								
+									searchStudentId = true;
+									try {
+										
+										int idd = Integer.parseInt(nameAdd.getText().toString());
+										Class.forName("com.mysql.cj.jdbc.Driver");
+										Login_through_credentails l1 = new Login_through_credentails();
+										Connection c =DriverManager.getConnection(l1.url, l1.user, l1.pass);
+										
+										String sql = "select * from student where id = "  + idd;
+										
+										
+										Statement st = c.createStatement();
+										
+										ResultSet rs = st.executeQuery(sql);
+										
+										if(rs.next()) {
+											
+											JOptionPane.showMessageDialog(null, "Id - " + rs.getString("id") + "\n"
+											
+												+"Name - "	+ rs.getString("name") + "\n" +
+													"E-mail - " + rs.getString("e_mail") + "\n" + "Password - "  + rs.getString("pass")
+													+"\n" + "Mobile - " + rs.getString("mobile")
+													+ "\n" + "Address - " + rs.getString("address") + "\n" + "Gender - "
+													+ rs.getString("gender") + "\n" + "Date of Birth" + rs.getString("Death_of_Birth"));
+										}else {
+											nameAdd.setText(null);
+											JOptionPane.showMessageDialog(null, "This student is not admitted in the library Ever");
+										}
+										
+									}catch(Exception EX) {
+										
+											JOptionPane.showMessageDialog(null, "Connection with the data Base is not possible");
+										
+									}
+									
+								}
+								
+								
+								
+							}
+						});
+						
+						searchBookId.addActionListener(new ActionListener() {
+							
+							boolean exception = false;
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								
+								if(nameAdd.getText().equals("")) {
+									JOptionPane.showMessageDialog(null, "Please Enter a Id first");
+								}else {
+									
+									try {
+										Integer.parseInt(nameAdd.getText().toString());
+									}catch(NumberFormatException Nfe) {
+										exception = true;
+										nameAdd.setText(null);
+										JOptionPane.showMessageDialog(null, "Please Enter a valid Id");
+									}
+									
+								}
+								
+								if(!exception) {
+								
+									searchStudentId = true;
+									try {
+										
+										int idd = Integer.parseInt(nameAdd.getText().toString());
+										Class.forName("com.mysql.cj.jdbc.Driver");
+										Login_through_credentails l1 = new Login_through_credentails();
+										Connection c =DriverManager.getConnection(l1.url, l1.user, l1.pass);
+										
+										String sql = "select * from student where id = "  + idd;
+										
+										
+										Statement st = c.createStatement();
+										
+										ResultSet rs = st.executeQuery(sql);
+										
+										if(rs.next()) {
+											
+											JOptionPane.showMessageDialog(null, "Id - " + rs.getString("id") + "\n"
+											
+												+"Name - "	+ rs.getString("name") + "\n" +
+													"E-mail - " + rs.getString("e_mail") + "\n" + "Password - "  + rs.getString("pass")
+													+"\n" + "Mobile - " + rs.getString("mobile")
+													+ "\n" + "Address - " + rs.getString("address") + "\n" + "Gender - "
+													+ rs.getString("gender") + "\n" + "Date of Birth" + rs.getString("Death_of_Birth"));
+										}else {
+											nameAdd.setText(null);
+											JOptionPane.showMessageDialog(null, "This student is not admitted in the library Ever");
+										}
+										
+									}catch(Exception EX) {
+										
+											JOptionPane.showMessageDialog(null, "Connection with the data Base is not possible");
+										
+									}
+									
+								}
+								
+								
+								
+							}
+						});
+						
+					}
+				});
+			
+			jInternalFrame.setLayout(null);
+			add(jInternalFrame, BorderLayout.CENTER);
+			
+			
+			jInternalFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+			jInternalFrame.setVisible(true);	
+			validate();
+			
+			
+		}
+		
+		
 	
+	}
 	//Button Clicked stops <-------------
 
 }
