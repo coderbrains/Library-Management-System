@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.math.BigInteger;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameEvent;
@@ -21,7 +23,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 	JLabel jLabel;
 	Container c;
 	
-	Boolean searchStudentId;
+	Boolean searchStudentId, searchBooksId;
 	
 	JLabel title, address, name, mob, gender, Dob, email, password, message;
 	JTextField nam, mobi, e_mail, pass;
@@ -1719,7 +1721,6 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 						
 						Font f = new Font("aerial", Font.BOLD, 25);
 						
-						
 						JLabel another = new JLabel();
 						another.setText("FILL THE BELOW INFO TO ISSUE A BOOK");
 						another.setBounds(400, 50, 550, 50);
@@ -1764,11 +1765,18 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 						addisbn.setBounds(350, 250, 200, 30);
 						jInternalFrame.add(addisbn);
 						
-						JTextField isbnAdd = new JTextField();
-						isbnAdd.setBounds(570, 250, 250	, 30);
-//						isbnAdd.setFont(f);
-						jInternalFrame.add(isbnAdd);
 						
+						JTextField dateTextField  = new JTextField();
+						dateTextField.setBounds(570, 250, 250	, 30);
+						DateTimeFormatter hello = DateTimeFormatter.ofPattern("dd-MM-yyyy  HH::mm");
+						LocalDateTime l =  LocalDateTime.now();
+						dateTextField.setText(hello.format(l));
+						dateTextField.setEditable(false);
+						dateTextField.setForeground(Color.GREEN);
+						dateTextField.setFont(f);
+						jInternalFrame.add(dateTextField);
+						
+
 						JLabel addprice = new JLabel();
 						addprice.setText("Due Date - ");
 						addprice.setFont(f);
@@ -1777,15 +1785,25 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 						
 						JTextField priceAdd = new JTextField();
 						priceAdd.setBounds(570, 300, 250, 30);
+						priceAdd.setFont(f);
+						priceAdd.setForeground(Color.RED);
+						hello = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+						l =  LocalDateTime.now();
+						priceAdd.setEditable(false);
+						
+						priceAdd.setText(hello.format(l.plusDays(15)));
 						jInternalFrame.add(priceAdd);
 						searchStudentId = false;
 						
 						searchId.addActionListener(new ActionListener() {
 							
-							boolean exception = false;
+							
 							
 							@Override
 							public void actionPerformed(ActionEvent e) {
+								
+								boolean exception = false;
+								
 								
 								if(nameAdd.getText().equals("")) {
 									JOptionPane.showMessageDialog(null, "Please Enter a Id first");
@@ -1803,7 +1821,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 								
 								if(!exception) {
 								
-									searchStudentId = true;
+									
 									try {
 										
 										int idd = Integer.parseInt(nameAdd.getText().toString());
@@ -1819,7 +1837,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 										ResultSet rs = st.executeQuery(sql);
 										
 										if(rs.next()) {
-											
+											searchStudentId = true;
 											JOptionPane.showMessageDialog(null, "Id - " + rs.getString("id") + "\n"
 											
 												+"Name - "	+ rs.getString("name") + "\n" +
@@ -1844,6 +1862,9 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 								
 							}
 						});
+						
+						
+						searchBooksId = false;
 						
 						searchBookId.addActionListener(new ActionListener() {
 							
@@ -1852,15 +1873,16 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 							@Override
 							public void actionPerformed(ActionEvent e) {
 								
-								if(nameAdd.getText().equals("")) {
+								if(authorAdd.getText().equals("")) {
+									
 									JOptionPane.showMessageDialog(null, "Please Enter a Id first");
 								}else {
 									
 									try {
-										Integer.parseInt(nameAdd.getText().toString());
+										Integer.parseInt(authorAdd.getText().toString());
 									}catch(NumberFormatException Nfe) {
 										exception = true;
-										nameAdd.setText(null);
+										authorAdd.setText(null);
 										JOptionPane.showMessageDialog(null, "Please Enter a valid Id");
 									}
 									
@@ -1868,15 +1890,15 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 								
 								if(!exception) {
 								
-									searchStudentId = true;
+									
 									try {
 										
-										int idd = Integer.parseInt(nameAdd.getText().toString());
+										int idd = Integer.parseInt(authorAdd.getText().toString());
 										Class.forName("com.mysql.cj.jdbc.Driver");
 										Login_through_credentails l1 = new Login_through_credentails();
 										Connection c =DriverManager.getConnection(l1.url, l1.user, l1.pass);
 										
-										String sql = "select * from student where id = "  + idd;
+										String sql = "select * from book where id = "  + idd;
 										
 										
 										Statement st = c.createStatement();
@@ -1885,16 +1907,18 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 										
 										if(rs.next()) {
 											
+											searchBooksId = true;
 											JOptionPane.showMessageDialog(null, "Id - " + rs.getString("id") + "\n"
 											
 												+"Name - "	+ rs.getString("name") + "\n" +
-													"E-mail - " + rs.getString("e_mail") + "\n" + "Password - "  + rs.getString("pass")
-													+"\n" + "Mobile - " + rs.getString("mobile")
-													+ "\n" + "Address - " + rs.getString("address") + "\n" + "Gender - "
-													+ rs.getString("gender") + "\n" + "Date of Birth" + rs.getString("Death_of_Birth"));
+													"Author - " + rs.getString("author") + "\n" + "ISBN - "  + rs.getString("isbn")
+													+"\n" + "Publisher - " + rs.getString("publisher")
+													 + "\n" + "Price - "
+													+ rs.getString("price"));
 										}else {
-											nameAdd.setText(null);
-											JOptionPane.showMessageDialog(null, "This student is not admitted in the library Ever");
+									
+											authorAdd.setText(null);
+											JOptionPane.showMessageDialog(null, "This book is not added in the libraray yet");
 										}
 										
 									}catch(Exception EX) {
@@ -1909,6 +1933,91 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 								
 							}
 						});
+						
+						JButton issueBookButton = new JButton("ISSUE BOOK");
+						issueBookButton.setBounds(900, 350, 150, 50);
+						issueBookButton.setBackground(Color.magenta);
+						jInternalFrame.add(issueBookButton);
+						Cursor c = new Cursor(Cursor.HAND_CURSOR);
+						issueBookButton.setCursor(c);
+						
+						issueBookButton.addActionListener(new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								
+								if(!searchStudentId) {
+									JOptionPane.showMessageDialog(null, "Please search the student Id first");
+									
+								}else if(!searchBooksId) {
+									JOptionPane.showMessageDialog(null, "Please check the book Id first");
+								}else {
+									
+									//Connection with the databse is handled here
+									
+									try {
+										
+										
+										Class.forName("com.mysql.cj.jdbc.Driver");
+										Login_through_credentails l1 = new Login_through_credentails();
+										Connection c =DriverManager.getConnection(l1.url, l1.user, l1.pass);
+										
+										String query = "select * from issue_book where student_id = ? and book_id = ?";
+										PreparedStatement st = c.prepareStatement(query);
+										st.setString(1, nameAdd.getText().toString());
+										st.setString(2, authorAdd.getText().toString());
+										
+										ResultSet rs = null;
+										
+										try {
+											
+											rs = st.executeQuery();
+											
+										}catch(Exception e1) {
+											JOptionPane.showMessageDialog(null, "Hello");
+										}
+										if(rs.next()) {
+											
+//											System.out.println(rs.next());
+											
+											searchBooksId = false;
+											searchStudentId = false;
+											nameAdd.setText(null);
+											authorAdd.setText(null);
+											
+											
+											
+											JOptionPane.showMessageDialog(null, "This book has been issued to the student already");
+										}else {
+											String sql = "insert into issue_book(student_id, book_id, issue_date, return_date)values(?,?,?,?);";
+											st = c.prepareStatement(sql);
+											st.setString(1,nameAdd.getText().toString() );
+											st.setString(2, authorAdd.getText().toString());
+											st.setString(3, dateTextField.getText().toString());
+											st.setString(4, priceAdd.getText().toString());
+											st.executeUpdate();
+											JOptionPane.showMessageDialog(null, "This Book has been issued to the student.");
+											
+										
+											searchBooksId = false;
+											searchStudentId = false;
+											nameAdd.setText(null);
+											authorAdd.setText(null);
+											
+										}
+										
+										
+									} catch (Exception e1) {
+										JOptionPane.showMessageDialog(null, "An Error occured");
+									}
+									
+									
+							
+								}
+								
+							}
+						});
+						
 						
 					}
 				});
