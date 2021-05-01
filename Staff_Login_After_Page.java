@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.math.BigInteger;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -1630,20 +1631,43 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				@Override
 				public void internalFrameActivated(InternalFrameEvent e) {
 					
+						
+					Font font = new Font("aerial", Font.CENTER_BASELINE, 18);
+					
+					
 					JButton seeStudent = new JButton();
-					seeStudent.setText("SEE ALL STUDENT");
-				    seeStudent.setBounds(350, 5, 300, 35);
+					seeStudent.setText("STUDENTS");
+				    seeStudent.setBounds(0, 50, 170 , 50);
 				    seeStudent.setBackground(Color.CYAN);
 				    jInternalFrame.add(seeStudent);
+				    seeStudent.setFont(font);
 				    
 
 					JButton seeBooks = new JButton();
-					seeBooks.setText("SEE BOOKS IN LIBRARY");
-				    seeBooks.setBounds(700, 5, 300, 35);
+					seeBooks.setText("BOOKS");
+				    seeBooks.setBounds(0, 100, 170, 50);
 				    seeBooks.setBackground(Color.cyan);
 				    jInternalFrame.add(seeBooks);
-					
-					
+				    seeBooks.setFont(font);
+				    
+				    
+				    JButton seeFines = new JButton();
+					seeFines.setText("FINES");
+				    seeFines.setBounds(0, 150, 170, 50);
+				    seeFines.setBackground(Color.cyan);
+				    jInternalFrame.add(seeFines);
+				    seeFines.setFont(font);
+				    
+				    JButton seeBookAllotment = new JButton();
+					seeBookAllotment.setText("ALLOTMENT");
+				    seeBookAllotment.setBounds(0, 200, 170, 50);
+				    seeBookAllotment.setBackground(Color.cyan);
+				    jInternalFrame.add(seeBookAllotment);
+				    seeBookAllotment.setFont(font);
+				    
+				    
+				    
+				
 				}
 			});
 			
@@ -2365,30 +2389,81 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 									st.setString(2, authorAdd.getText().toString());
 									
 									ResultSet rs = null;
-									
-									try {
 										
 										rs = st.executeQuery();
+										
 										if(rs.next()) {
 											
-											query = "delete from book_issue where book_id = ? and student_id = ?";
+											dateTextField.setText(rs.getString("issue_date"));
+											priceAdd.setText(rs.getString("return_date"));
+											
+											String d1 = rs.getString("return_date");
+											java.util.Date expected_return = new SimpleDateFormat("dd-MM-yyyy").parse(d1);
+											
+											String d2 = returnD.getText().toString();
+											java.util.Date actual_return = new SimpleDateFormat("dd-MM-yyyy").parse(d2);
+											
+											long diffInmillis =(actual_return.getTime() - expected_return.getTime());
+											int year = (int)(diffInmillis / (1000l * 60 * 60 * 24 * 365)) * 365;
+											int days = (int)(diffInmillis  / (1000 * 60 * 60 * 24)) % 365;
+											days = days + year;
+											if(days > 15) {
+												int fine = days * 5;
+												JOptionPane.showMessageDialog(null, "Student is returnng the book late by " + days + " Days. So Fine :" + fine + " has to be paid");
+											
+												
+												// Inserting fine to the concerned student
+												
+												query = "insert into Fine_table(student_id, book_id, actual_return_date, expected_return_date, Number_of_days_late, fine_amount)"
+														+ "values(?,?,?,?,?,?)";
+												st = c.prepareStatement(query);
+												st.setString(1, rs.getString("student_id"));
+												st.setString(2, rs.getString("book_id"));
+												st.setString(3, rs.getString("return_date"));
+												st.setString(4, d2);
+												st.setInt(5, days);
+												st.setInt(6, fine);
+												
+												st.executeUpdate();
+												
+											JOptionPane.showMessageDialog(null, "Fine has been added");
+												
+											}
+											
+											query = "delete from issue_book where book_id = ? and student_id = ?";
+											
+											
 											st = c.prepareStatement(query);
 											st.setString(1, rs.getString("book_id"));
 											st.setString(2, rs.getString("student_id"));
 											st.executeUpdate();
-											JOptionPane.showMessageDialog(null, "Returned on date");
+											JOptionPane.showMessageDialog(null, "This book has been returned back");
+											
+											
 											
 										}else {
-
-											JOptionPane.showMessageDialog(null, "This book is not issued to the concerned person");
+										
+											JOptionPane.showMessageDialog(null, "This book is not issued to the concerned person"
+													);
 										}
 										
-									}catch(Exception e1) {
-										JOptionPane.showMessageDialog(null, "Hello");
-									}
+										
+										nameAdd.setText(null);
+										authorAdd.setText(null);
+										dateTextField.setText(null);
+										
+										
+										c.close();
+										st.close();
+										
+									
 									
 								}catch(Exception ex) {
 									
+									JOptionPane.showMessageDialog(null, "SOME ERROR OCCURED."
+											+ "\n" + "PLEASE CONTACT WITH THE DEVELOPER"
+											+ "\n" + "Whatsapp - 9102504188 "
+											+ "\n" + "E-mail - awanishkumarsingh03@gmail.com");
 								}
 								
 							}
@@ -2408,6 +2483,10 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 			jInternalFrame.setVisible(true);	
 			validate();
 		}
+		
+		//--------->RETURN BOOK BUTTON CLICKED STOPS HERE 
+		
+		//<--------- see 
 		
 		
 	
