@@ -1669,7 +1669,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 					jInternalFrame.dispose();
 				}
 				
-				removeBook.setEnabled(false);
+				issueBook.setEnabled(false);
 				jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
 				jInternalFrame.setLayout(null);
 				jInternalFrame.setTitle("ISSUE BOOK TO A STUDENT");
@@ -1768,7 +1768,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 						
 						JTextField dateTextField  = new JTextField();
 						dateTextField.setBounds(570, 250, 250	, 30);
-						DateTimeFormatter hello = DateTimeFormatter.ofPattern("dd-MM-yyyy  HH::mm");
+						DateTimeFormatter hello = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 						LocalDateTime l =  LocalDateTime.now();
 						dateTextField.setText(hello.format(l));
 						dateTextField.setEditable(false);
@@ -1951,6 +1951,12 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 									
 								}else if(!searchBooksId) {
 									JOptionPane.showMessageDialog(null, "Please check the book Id first");
+								}else if(nameAdd.getText().toString().equals("")){
+									JOptionPane.showMessageDialog(null, "Please fill the Book field first");
+									searchStudentId = false;
+								}else if(authorAdd.getText().toString().equals("")) {
+									JOptionPane.showMessageDialog(null, "Please Enter a bookId and check in the Library first");
+									searchBooksId = false;
 								}else {
 									
 									//Connection with the databse is handled here
@@ -2031,6 +2037,376 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 			validate();
 			
 			
+		}
+		
+		//---------------->Issue book Clicks button stops here
+		
+		//<---------------Return Book Click starts here
+		
+		if(e.getSource() == returnBook) {
+			
+			if(jInternalFrame != null) {
+				jInternalFrame.dispose();
+			}
+			
+			returnBook.setEnabled(false);
+			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
+			jInternalFrame.setLayout(null);
+			jInternalFrame.setTitle("RETURN BOOK FROM A STUDENT");
+			add(jInternalFrame, BorderLayout.CENTER);
+			
+			jInternalFrame.addInternalFrameListener(new InternalFrameListener() {
+				
+				@Override
+				public void internalFrameOpened(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameIconified(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameDeiconified(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameDeactivated(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameClosing(InternalFrameEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void internalFrameClosed(InternalFrameEvent e) {
+					returnBook.setEnabled(true);
+					
+				}
+				
+				@Override
+				public void internalFrameActivated(InternalFrameEvent e) {
+					
+					
+					
+					Font f = new Font("aerial", Font.BOLD, 25);
+					
+					JLabel another = new JLabel();
+					another.setText("FILL THE BELOW INFO TO RETURN THE BOOK");
+					another.setBounds(400, 50, 700, 50);
+					another.setFont(f);
+					jInternalFrame.add(another, BorderLayout.CENTER);
+					another.setVisible(true);
+					
+					JLabel name = new JLabel();
+					name.setText("Student ID - ");
+					name.setFont(f);
+					name.setBounds(350, 150, 200, 30);
+					jInternalFrame.add(name);
+					
+					JTextField nameAdd = new JTextField();
+					nameAdd.setBounds(570, 150, 250	, 30);
+					jInternalFrame.add(nameAdd);
+					
+					JButton searchId = new JButton("Search ID");
+					searchId.setBounds(818, 150, 100, 28);
+					searchId.setBackground(Color.CYAN);
+					jInternalFrame.add(searchId);
+					
+					JLabel authorName = new JLabel();
+					authorName.setText("Book Id - ");
+					authorName.setFont(f);
+					authorName.setBounds(350, 200, 200, 30);
+					jInternalFrame.add(authorName);
+					
+					JTextField authorAdd = new JTextField();
+					authorAdd.setBounds(570, 200, 250	, 30);
+//					authorAdd.setFont(f);
+					jInternalFrame.add(authorAdd);
+					
+					JButton searchBookId = new JButton("Search Id");
+					searchBookId.setBackground(Color.CYAN);
+					searchBookId.setBounds(818, 200, 100, 30);
+					jInternalFrame.add(searchBookId);
+					
+					JLabel addisbn = new JLabel();
+					addisbn.setText("Issued date - ");
+					addisbn.setFont(f);
+					addisbn.setBounds(350, 250, 200, 30);
+					jInternalFrame.add(addisbn);
+					
+					
+					JTextField dateTextField  = new JTextField();
+					dateTextField.setBounds(570, 250, 250	, 30);
+					dateTextField.setEditable(false);
+					dateTextField.setForeground(Color.GREEN);
+					dateTextField.setFont(f);
+					jInternalFrame.add(dateTextField);
+					
+
+					JLabel addprice = new JLabel();
+					addprice.setText("Expected Return- ");
+					addprice.setFont(f);
+					addprice.setBounds(350, 300, 200, 30);
+					jInternalFrame.add(addprice);
+					
+					JTextField priceAdd = new JTextField();
+					priceAdd.setBounds(570, 300, 250, 30);
+					priceAdd.setFont(f);
+					priceAdd.setForeground(Color.RED);
+					priceAdd.setEditable(false);
+					jInternalFrame.add(priceAdd);
+					searchStudentId = false;
+					
+					JLabel retrundate = new JLabel();
+					retrundate.setText("Return Date- ");
+					retrundate.setFont(f);
+					retrundate.setBounds(350, 350, 200, 30);
+					jInternalFrame.add(retrundate);
+					
+					JTextField returnD = new JTextField();
+					returnD.setBounds(570, 350, 250, 30);
+					returnD.setFont(f);
+					DateTimeFormatter hello = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					LocalDateTime l =  LocalDateTime.now();
+					returnD.setText(hello.format(l));
+					returnD.setForeground(Color.RED);
+					returnD.setEditable(false);
+					jInternalFrame.add(returnD);
+					searchStudentId = false;
+					
+					searchId.addActionListener(new ActionListener() {
+						
+						
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							boolean exception = false;
+							
+							
+							if(nameAdd.getText().equals("")) {
+								JOptionPane.showMessageDialog(null, "Please Enter a Id first");
+							}else {
+								
+								try {
+									Integer.parseInt(nameAdd.getText().toString());
+								}catch(NumberFormatException Nfe) {
+									exception = true;
+									nameAdd.setText(null);
+									JOptionPane.showMessageDialog(null, "Please Enter a valid Id");
+								}
+								
+							}
+							
+							if(!exception) {
+							
+								
+								try {
+									
+									int idd = Integer.parseInt(nameAdd.getText().toString());
+									Class.forName("com.mysql.cj.jdbc.Driver");
+									Login_through_credentails l1 = new Login_through_credentails();
+									Connection c =DriverManager.getConnection(l1.url, l1.user, l1.pass);
+									
+									String sql = "select * from student where id = "  + idd;
+									
+									
+									Statement st = c.createStatement();
+									
+									ResultSet rs = st.executeQuery(sql);
+									
+									if(rs.next()) {
+										searchStudentId = true;
+										JOptionPane.showMessageDialog(null, "Id - " + rs.getString("id") + "\n"
+										
+											+"Name - "	+ rs.getString("name") + "\n" +
+												"E-mail - " + rs.getString("e_mail") + "\n" + "Password - "  + rs.getString("pass")
+												+"\n" + "Mobile - " + rs.getString("mobile")
+												+ "\n" + "Address - " + rs.getString("address") + "\n" + "Gender - "
+												+ rs.getString("gender") + "\n" + "Date of Birth" + rs.getString("Death_of_Birth"));
+									}else {
+										nameAdd.setText(null);
+										JOptionPane.showMessageDialog(null, "This student is not admitted in the library Ever");
+									}
+									
+								}catch(Exception EX) {
+									
+										JOptionPane.showMessageDialog(null, "Connection with the data Base is not possible");
+									
+								}
+								
+							}
+							
+							
+							
+						}
+					});
+					
+					
+					searchBooksId = false;
+					
+					searchBookId.addActionListener(new ActionListener() {
+						
+						boolean exception = false;
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							if(authorAdd.getText().equals("")) {
+								
+								JOptionPane.showMessageDialog(null, "Please Enter a Id first");
+							}else {
+								
+								try {
+									Integer.parseInt(authorAdd.getText().toString());
+								}catch(NumberFormatException Nfe) {
+									exception = true;
+									authorAdd.setText(null);
+									JOptionPane.showMessageDialog(null, "Please Enter a valid Id");
+								}
+								
+							}
+							
+							if(!exception) {
+							
+								
+								try {
+									
+									int idd = Integer.parseInt(authorAdd.getText().toString());
+									Class.forName("com.mysql.cj.jdbc.Driver");
+									Login_through_credentails l1 = new Login_through_credentails();
+									Connection c =DriverManager.getConnection(l1.url, l1.user, l1.pass);
+									
+									String sql = "select * from book where id = "  + idd;
+									
+									
+									Statement st = c.createStatement();
+									
+									ResultSet rs = st.executeQuery(sql);
+									
+									if(rs.next()) {
+										
+										searchBooksId = true;
+										JOptionPane.showMessageDialog(null, "Id - " + rs.getString("id") + "\n"
+										
+											+"Name - "	+ rs.getString("name") + "\n" +
+												"Author - " + rs.getString("author") + "\n" + "ISBN - "  + rs.getString("isbn")
+												+"\n" + "Publisher - " + rs.getString("publisher")
+												 + "\n" + "Price - "
+												+ rs.getString("price"));
+									}else {
+								
+										authorAdd.setText(null);
+										JOptionPane.showMessageDialog(null, "This book is not added in the libraray yet");
+									}
+									
+								}catch(Exception EX) {
+									
+										JOptionPane.showMessageDialog(null, "Connection with the data Base is not possible");
+									
+								}
+								
+							}
+							
+							
+							
+						}
+					});
+					
+					
+					JButton issueBookButton = new JButton("ISSUE BOOK");
+					issueBookButton.setBounds(900, 350, 150, 50);
+					issueBookButton.setBackground(Color.magenta);
+					jInternalFrame.add(issueBookButton);
+					Cursor c = new Cursor(Cursor.HAND_CURSOR);
+					issueBookButton.setCursor(c);
+					
+					issueBookButton.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							
+							if(!searchStudentId) {
+								JOptionPane.showMessageDialog(null, "Please search the student Id first");
+								
+							}else if(!searchBooksId) {
+								JOptionPane.showMessageDialog(null, "Please check the book Id first");
+							}else if(nameAdd.getText().toString().equals("")){
+								JOptionPane.showMessageDialog(null, "Please fill the Book field first");
+								searchStudentId = false;
+							}else if(authorAdd.getText().toString().equals("")) {
+								JOptionPane.showMessageDialog(null, "Please Enter a bookId and check in the Library first");
+								searchBooksId = false;
+							}else {
+								
+								//Connection wirh the data base is established here
+								
+								try {
+									
+									
+									Class.forName("com.mysql.cj.jdbc.Driver");
+									Login_through_credentails l1 = new Login_through_credentails();
+									Connection c =DriverManager.getConnection(l1.url, l1.user, l1.pass);
+									
+									String query = "select * from issue_book where student_id = ? and book_id = ?";
+									PreparedStatement st = c.prepareStatement(query);
+									st.setString(1, nameAdd.getText().toString());
+									st.setString(2, authorAdd.getText().toString());
+									
+									ResultSet rs = null;
+									
+									try {
+										
+										rs = st.executeQuery();
+										if(rs.next()) {
+											
+											query = "delete from book_issue where book_id = ? and student_id = ?";
+											st = c.prepareStatement(query);
+											st.setString(1, rs.getString("book_id"));
+											st.setString(2, rs.getString("student_id"));
+											st.executeUpdate();
+											JOptionPane.showMessageDialog(null, "Returned on date");
+											
+										}else {
+
+											JOptionPane.showMessageDialog(null, "This book is not issued to the concerned person");
+										}
+										
+									}catch(Exception e1) {
+										JOptionPane.showMessageDialog(null, "Hello");
+									}
+									
+								}catch(Exception ex) {
+									
+								}
+								
+							}
+							
+						}
+					});
+			
+					
+				}
+			});
+
+			jInternalFrame.setLayout(null);
+			add(jInternalFrame, BorderLayout.CENTER);
+			
+			
+			jInternalFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+			jInternalFrame.setVisible(true);	
+			validate();
 		}
 		
 		
