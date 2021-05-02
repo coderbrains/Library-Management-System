@@ -20,7 +20,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 	//-------> Start
 	
 	JMenuBar menuBar;
-	JButton addStudent, lookStudent, returnBook, issueBook, removeStudent, addBook, removeBook, seeAll;
+	JButton addStudent, exit, lookStudent, returnBook, issueBook, removeStudent, addBook, removeBook, seeAll;
 	JLabel jLabel;
 	Container c;
 	
@@ -53,7 +53,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		removeStudent = new JButton("Remove Student");
 		removeBook = new JButton("Remove Book");
 		seeAll = new JButton("See All");
-		
+		exit = new JButton("Exit");
 		
 		
 
@@ -66,6 +66,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		addBook.setCursor(cursor);
 		removeBook.setCursor(cursor);
 		seeAll.setCursor(cursor);
+		exit.setCursor(cursor);
 		
 		Font f = new Font("aerial", Font.BOLD, 22);
 		
@@ -77,6 +78,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		addBook.setFont(f);
 		removeBook.setFont(f);
 		seeAll.setFont(f);
+		exit.setFont(f);
 		
 		
 		
@@ -88,7 +90,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		menuBar.add(addBook);
 		menuBar.add(removeBook);
 		menuBar.add(seeAll);
-		
+		menuBar.add(exit);
 		
 		c.add(menuBar, BorderLayout.PAGE_START);
 		
@@ -101,6 +103,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		removeBook.addActionListener(this);
 		removeStudent.addActionListener(this);
 		seeAll.addActionListener(this);
+		exit.addActionListener(this);
 		
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
@@ -1634,44 +1637,350 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 						
 					Font font = new Font("aerial", Font.CENTER_BASELINE, 18);
 					
+					JPanel jPanel = new JPanel();
+					jPanel.setLayout(new GridLayout(7,1));
+					jPanel.setBounds(0, 0, 280, 638);
+					jPanel.setBackground(Color.WHITE);
+					jInternalFrame.add(jPanel);
 					
 					JButton seeStudent = new JButton();
 					seeStudent.setText("STUDENTS");
-				    seeStudent.setBounds(0, 50, 170 , 50);
 				    seeStudent.setBackground(Color.CYAN);
-				    jInternalFrame.add(seeStudent);
 				    seeStudent.setFont(font);
+				    jPanel.add(seeStudent);
 				    
 
 					JButton seeBooks = new JButton();
 					seeBooks.setText("BOOKS");
-				    seeBooks.setBounds(0, 100, 170, 50);
 				    seeBooks.setBackground(Color.cyan);
-				    jInternalFrame.add(seeBooks);
 				    seeBooks.setFont(font);
+				    jPanel.add(seeBooks);
 				    
 				    
 				    JButton seeFines = new JButton();
 					seeFines.setText("FINES");
-				    seeFines.setBounds(0, 150, 170, 50);
 				    seeFines.setBackground(Color.cyan);
-				    jInternalFrame.add(seeFines);
 				    seeFines.setFont(font);
+				    jPanel.add(seeFines);
 				    
 				    JButton seeBookAllotment = new JButton();
 					seeBookAllotment.setText("ALLOTMENT");
-				    seeBookAllotment.setBounds(0, 200, 170, 50);
 				    seeBookAllotment.setBackground(Color.cyan);
-				    jInternalFrame.add(seeBookAllotment);
 				    seeBookAllotment.setFont(font);
+				    jPanel.add(seeBookAllotment);				    
+
+				    JButton FAQ = new JButton();
+					FAQ.setText("FAQ-?");
+				    FAQ.setBackground(Color.cyan);
+				    FAQ.setFont(font);
+				    jPanel.add(FAQ);
+				    
+				    JButton developer = new JButton();
+					developer.setText("DEVELOPER");
+				    developer.setBackground(Color.cyan);
+				    developer.setFont(font);
+				    jPanel.add(developer);
+					
+				    JButton logout = new JButton();
+					logout.setText("LOG-OUT");
+				    logout.setBackground(Color.cyan);
+				    logout.setFont(font);
+				    jPanel.add(logout);  
 				    
 				    
+				    JList<String> jList = new JList<String>();
+					JPanel jPanel1 = new JPanel();
+					jPanel1.setLayout(new GridLayout(1,1));
+					jPanel1.setBounds(280, 0, 1074,  638);
+					jPanel1.add(new JScrollPane(jList));
+					jInternalFrame.add(jPanel1);
+					
+					DefaultListModel<String> dModel = new DefaultListModel<>();
+					jList.setFont(font);
+					
+					
+					
+					seeStudent.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							try {
+								
+								Class.forName("com.mysql.cj.jdbc.Driver");
+								Login_through_credentails l = new Login_through_credentails();
+								
+								Connection c = DriverManager.getConnection(l.url, l.user, l.pass);
+								
+								String query = "select * from student";
+								Statement st = c.createStatement();
+								ResultSet rs = st.executeQuery(query);
+									
+									while(rs.next()) {
+										
+									
+									String id = rs.getString("id");
+									String name = rs.getString("name");
+									String email = rs.getString("e_mail");
+									String pass = rs.getString("pass");
+									String mobile = rs.getString("mobile");
+									String gender = rs.getString("gender");
+									String date_birth = rs.getString("Death_of_Birth");
+									String address = rs.getString("address");
+									dModel.add(0, "ID - " +id);
+									dModel.add(1, "Name -  " + name);
+									dModel.add(2, "Email - " + email);
+									dModel.add(3, "Password -"+ pass);
+									dModel.add(4, "Mobile - " +  mobile);
+									dModel.add(5, "Gender - " +  gender);
+									dModel.add(6, "Date of Birth - " + date_birth);
+									dModel.add(7, "Address - " + address);
+									dModel.add(8, "\n");
+									jList.setModel(dModel);
+									
+									}
+
+									c.close();
+									st.close();
+								
+							} catch (Exception e1) {
+								
+								JOptionPane.showMessageDialog(null, "Nothiong to print or Some error occured");
+							}
+							
+							
+						}
+					});
+					
+					seeBooks.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							
+							
+							try {
+								
+								Class.forName("com.mysql.cj.jdbc.Driver");
+								Login_through_credentails l = new Login_through_credentails();
+								
+								Connection c = DriverManager.getConnection(l.url, l.user, l.pass);
+								
+								String query = "select * from book";
+								Statement st = c.createStatement();
+								ResultSet rs = st.executeQuery(query);
+									
+									while(rs.next()) {
+										
+									
+									String id = rs.getString("id");
+									String name = rs.getString("name");
+									String email = rs.getString("author");
+									String pass = rs.getString("isbn");
+									String mobile = rs.getString("publisher");
+									int gender = rs.getInt("price");
+									
+									dModel.add(0, "ID - " +id);
+									dModel.add(1, "Book Name -  " + name);
+									dModel.add(2, "Author  - " + email);
+									dModel.add(3, "ISBN -"+ pass);
+									dModel.add(4, "Publisher - " +  mobile);
+									dModel.add(5, "Price - " +  gender);
+									dModel.add(6, "\n");
+									jList.setModel(dModel);
+									
+									}
+
+									c.close();
+									st.close();
+								
+							} catch (Exception e1) {
+								
+								JOptionPane.showMessageDialog(null, "Nothiong to print or Some error occured");
+							}
+							
+							
+						}
+					});
+					
+					
+					seeFines.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							
+							
+							try {
+								
+								Class.forName("com.mysql.cj.jdbc.Driver");
+								Login_through_credentails l = new Login_through_credentails();
+								
+								Connection c = DriverManager.getConnection(l.url, l.user, l.pass);
+								
+								String query = "select * from student , Fine_table where student.id = Fine_table.student_id order by student.id desc";
+							
+								Statement st = c.createStatement();
+								ResultSet rs = st.executeQuery(query);
+								
+							int fine_amount =0;
+									
+									while(rs.next()) {
+										
+									
+									int id = rs.getInt("student_id");
+									String student_name = rs.getString("student.name");
+									int name = rs.getInt("book_id");
+									String email = rs.getString("actual_return_date");
+									String pass = rs.getString("expected_return_date");
+									String mobile = rs.getString("Number_of_days_late");
+									int gender = rs.getInt("fine_amount");
+									fine_amount = fine_amount + gender;
+									dModel.add(0, "BOOK-ID - " +id);
+									dModel.add(1, "STUDENT NAME - " + student_name);
+									dModel.add(2, "STUDENT ID -  " + name);
+									dModel.add(3, "ACTUAL RETURN DATE - " + email);
+									dModel.add(4, "EXPECTED RETURN DATE -"+ pass);
+									dModel.add(5, "NUMBER OF DAYS LATE - " +  mobile);
+									dModel.add(6, "FINE AMOUNTS - " +  gender);
+									dModel.add(7, "\n");
+									jList.setModel(dModel);
+									
+									}
+								
+									dModel.add(0, "\n" + "Hello, Staff The total Amount of fine to be collected is : " + fine_amount + "\n" + "\n" + "\n");
+									
+									jList.setModel(dModel);
+
+
+									c.close();
+									st.close();
+								
+							} catch (Exception e1) {
+								
+								JOptionPane.showMessageDialog(null, "Nothiong to print or Some error occured");
+							}
+							
+							
+						}
+					});
+					
+					
+					seeBookAllotment.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							
+							
+							try {
+								
+								Class.forName("com.mysql.cj.jdbc.Driver");
+								Login_through_credentails l = new Login_through_credentails();
+								
+								Connection c = DriverManager.getConnection(l.url, l.user, l.pass);
+
+								String query = 	"select * from issue_book, student,  book where issue_book.student_id = student.id  and issue_book.book_id = book.id";
+							
+								Statement st = c.createStatement();
+								ResultSet rs = st.executeQuery(query);
+					
+									
+									while(rs.next()) {
+										
+									
+									int student_id = rs.getInt("issue_book.student_id");
+									String student_name = rs.getString("student.name");
+									int book_id = rs.getInt("issue_book.book_id");
+									String book_name = rs.getString("book.name");
+									String email = rs.getString("issue_book.return_date");
+									String pass = rs.getString("issue_book.issue_date");
+									
+									dModel.add(0, "BOOK-ID - " + book_id);
+									dModel.add(1, "BOOK NAME - " + book_name);
+									dModel.add(2, "STUDENT ID - " + student_id);
+									dModel.add(3, "STUDENT NAME -  " + student_name);
+									dModel.add(4, "RETURN DATE - " + email);
+									dModel.add(5, "ISSUE DATE -" + pass);
+									dModel.add(6, "\n");
+									jList.setModel(dModel);
+									
+									}
+								
+									
+									jList.setModel(dModel);
+
+
+									c.close();
+									st.close();
+								
+							} catch (Exception e1) {
+								
+								JOptionPane.showMessageDialog(null, "Nothiong to print or Some error occured");
+							}
+							
+						}
+					});
+					
+					
+					FAQ.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							
+							
+							try {	
+								
+									dModel.add(0, "FAQ IS NOT AVAILABEL");
+								
+									jList.setModel(dModel);									
+									jList.setModel(dModel);
+
+
+																	
+							} catch (Exception e1) {
+								
+								JOptionPane.showMessageDialog(null, "Nothiong to print or Some error occured");
+							}
+							
+						}
+					});
+					
+					developer.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							dModel.add(0, "Name - Awanish Kumar Singh");
+							dModel.add(1, "Mobile - 9102504188");
+							dModel.add(2, "Whatsapp - 9102504188");
+							dModel.add(3, "E-mail - awanishkumarsingh03@gmail.com");
+							dModel.add(4, "YouTube - Coder Brains");
+							jList.setModel(dModel);									
+							jList.setModel(dModel);
+
+							
+						}
+					});
+					
+					logout.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							dispose();
+							new LoginAsk_Screen();
+							
+						}
+					});
 				    
 				
 				}
 			});
 			
 			jInternalFrame.setLayout(null);
+			jInternalFrame.setBackground(Color.WHITE);
 			jInternalFrame.setTitle("ADD A STUDENT");
 			add(jInternalFrame, BorderLayout.CENTER);
 			
@@ -2486,7 +2795,26 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		
 		//--------->RETURN BOOK BUTTON CLICKED STOPS HERE 
 		
-		//<--------- see 
+		//<--------- Exit button clicked starts here---------->
+		
+		if(e.getSource() == exit) {
+			
+			
+			int result = JOptionPane.showConfirmDialog(null, "Do you want to Exit ?", "EXIT APP", JOptionPane.YES_NO_OPTION ,JOptionPane.INFORMATION_MESSAGE);
+			
+			if(result == JOptionPane.YES_OPTION) {
+				try {
+					
+					Thread.sleep(1000);
+					dispose();
+					
+				} catch (InterruptedException e1) {
+					
+					JOptionPane.showMessageDialog(null,"Error occured while exit....Go to logout option in See All");
+				}
+			}
+			
+		}
 		
 		
 	
