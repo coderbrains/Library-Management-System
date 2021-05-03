@@ -92,7 +92,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		menuBar.add(seeAll);
 		menuBar.add(exit);
 		
-		c.add(menuBar, BorderLayout.PAGE_START);
+		c.add(menuBar, BorderLayout.PAGE_START);	
 		
 		addStudent.addActionListener(this);
 		returnBook.addActionListener(this);
