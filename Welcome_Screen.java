@@ -34,7 +34,7 @@ public class Welcome_Screen extends JFrame {
 		
 		add(jLabel, BorderLayout.CENTER);
 		
-		jLabel.setIcon(icon);
+//		jLabel.setIcon(icon);
 		
 		validate();
 		
