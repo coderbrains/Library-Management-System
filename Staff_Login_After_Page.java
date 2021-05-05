@@ -24,6 +24,8 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 	JLabel jLabel;
 	Container c;
 	
+	JPanel jPanel ;
+	
 	Boolean searchStudentId, searchBooksId;
 	
 	JLabel title, address, name, mob, gender, Dob, email, password, message;
@@ -68,17 +70,37 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		seeAll.setCursor(cursor);
 		exit.setCursor(cursor);
 		
-		Font f = new Font("aerial", Font.BOLD, 22);
+		Font f = new Font("aerial", Font.BOLD, 18);
 		
 		addStudent.setFont(f);
 		lookStudent.setFont(f);
 		returnBook.setFont(f);
 		issueBook.setFont(f);
-		removeStudent.setFont(f);
+		removeStudent.setFont(new Font("aerial", Font.BOLD, 14));
 		addBook.setFont(f);
-		removeBook.setFont(f);
+		removeBook.setFont(new Font("aerial", Font.BOLD, 15));
 		seeAll.setFont(f);
 		exit.setFont(f);
+		
+		addStudent.setBackground(Color.CYAN);
+		addStudent.setForeground(Color.WHITE);
+		removeStudent.setBackground(Color.CYAN);
+		removeStudent.setForeground(Color.WHITE);
+		issueBook.setBackground(Color.CYAN);
+		issueBook.setForeground(Color.WHITE);
+		removeBook.setBackground(Color.CYAN);
+		removeBook.setForeground(Color.WHITE);
+		exit.setBackground(Color.CYAN);
+		exit.setForeground(Color.WHITE);
+		addStudent.setBackground(Color.CYAN);
+		addStudent.setForeground(Color.WHITE);
+		addStudent.setBackground(Color.CYAN);
+		addStudent.setForeground(Color.WHITE);
+		addStudent.setBackground(Color.CYAN);
+		addStudent.setForeground(Color.WHITE);
+		addStudent.setBackground(Color.CYAN);
+		addStudent.setForeground(Color.WHITE);
+		
 		
 		
 		
@@ -92,6 +114,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		menuBar.add(seeAll);
 		menuBar.add(exit);
 		
+		menuBar.setLayout(new GridLayout(1,9));
 		c.add(menuBar, BorderLayout.PAGE_START);	
 		
 		addStudent.addActionListener(this);
@@ -104,6 +127,26 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		removeStudent.addActionListener(this);
 		seeAll.addActionListener(this);
 		exit.addActionListener(this);
+		
+		jPanel = new JPanel();
+//		jInternalFrame = new JInternalFrame();
+		jPanel.setVisible(true);
+		jPanel.setBackground(Color.RED);
+		add(jPanel, BorderLayout.CENTER);
+		jPanel.setLayout(null);
+		
+		JLabel title = new JLabel();
+		title.setText("\"SABSE BADA YOG EK DUSRE KA SAHYOG\"");
+		title.setBounds(200, 20, 1000, 30);
+		title.setBackground(Color.RED);
+//		title.setForeground(Color.gray);
+		title.setFont(new Font("aerial", Font.BOLD, 40));
+		jPanel.add(title);
+		
+		ImageIcon icon = new ImageIcon("D:\\New folder\\JAVA PROJECTS\\java programs\\librarySystem\\src\\gniot_library\\download.jpg");
+		JLabel image = new JLabel(icon,JLabel.CENTER);
+		image.setBounds(420, 100, 500, 500);
+		jPanel.add(image);
 		
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
@@ -138,7 +181,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				jInternalFrame.dispose();
 			}
 			
-
+			jPanel.setVisible(false);
 			addStudent.setEnabled(false);
 			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
 			jInternalFrame.setLayout(null);
@@ -293,6 +336,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				public void internalFrameClosed(InternalFrameEvent e) {
 					
 					addStudent.setEnabled(true);
+					jPanel.setVisible(true);
 				}
 
 				@Override
@@ -446,6 +490,8 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 			if(jInternalFrame != null) {
 				jInternalFrame.dispose();
 			}
+			
+			jPanel.setVisible(false);
 
 			lookStudent.setEnabled(false);
 			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
@@ -488,7 +534,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				@Override
 				public void internalFrameClosed(InternalFrameEvent e) {
 					lookStudent.setEnabled(true);
-					
+					jPanel.setVisible(true);
 				}
 				
 				@Override
@@ -920,7 +966,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 			if(jInternalFrame != null) {
 				jInternalFrame.dispose();
 			}
-			
+			jPanel.setVisible(false);
 			addBook.setEnabled(false);
 			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
 			jInternalFrame.setLayout(null);
@@ -962,7 +1008,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				@Override
 				public void internalFrameClosed(InternalFrameEvent e) {
 					addBook.setEnabled(true);
-					
+					jPanel.setVisible(true);
 				}
 				
 				@Override
@@ -1234,7 +1280,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 			if(jInternalFrame != null) {
 				jInternalFrame.dispose();
 			}
-			
+			jPanel.setVisible(false);
 			removeBook.setEnabled(false);
 			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
 			jInternalFrame.setLayout(null);
@@ -1276,7 +1322,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				@Override
 				public void internalFrameClosed(InternalFrameEvent e) {
 					removeBook.setEnabled(true);
-					
+					jPanel.setVisible(true);
 				}
 				
 				@Override
@@ -1412,7 +1458,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 			if(jInternalFrame != null) {
 				jInternalFrame.dispose();
 			}
-			
+			jPanel.setVisible(false);
 			removeStudent.setEnabled(false);
 			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
 			jInternalFrame.setLayout(null);
@@ -1454,7 +1500,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				@Override
 				public void internalFrameClosed(InternalFrameEvent e) {
 					removeStudent.setEnabled(true);
-					
+					jPanel.setVisible(true);
 				}
 				
 				@Override
@@ -1586,9 +1632,11 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		if(e.getSource() == seeAll) {
 			
 			if(jInternalFrame != null) {
+				
 				jInternalFrame.dispose();
+				
 			}
-			
+			jPanel.setVisible(false);
 			seeAll.setEnabled(false);
 			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
 			
@@ -1628,7 +1676,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				@Override
 				public void internalFrameClosed(InternalFrameEvent e) {
 					seeAll.setEnabled(true);
-					
+					jPanel.setVisible(true);
 				}
 				
 				@Override
@@ -1823,7 +1871,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 								Statement st = c.createStatement();
 								ResultSet rs = st.executeQuery(query);
 								
-							int fine_amount =0;
+									int fine_amount =0;
 									
 									while(rs.next()) {
 										
@@ -2001,7 +2049,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				if(jInternalFrame != null) {
 					jInternalFrame.dispose();
 				}
-				
+				jPanel.setVisible(false);
 				issueBook.setEnabled(false);
 				jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
 				jInternalFrame.setLayout(null);
@@ -2045,7 +2093,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 					public void internalFrameClosed(InternalFrameEvent e) {
 						
 						issueBook.setEnabled(true);
-						
+						jPanel.setVisible(true);
 					}
 					
 					@Override
@@ -2381,7 +2429,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 			if(jInternalFrame != null) {
 				jInternalFrame.dispose();
 			}
-			
+			jPanel.setVisible(false);
 			returnBook.setEnabled(false);
 			jInternalFrame = new JInternalFrame("This is Internal jFrame", true, true, true, true);
 			jInternalFrame.setLayout(null);
@@ -2423,7 +2471,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				@Override
 				public void internalFrameClosed(InternalFrameEvent e) {
 					returnBook.setEnabled(true);
-					
+					jPanel.setVisible(true);
 				}
 				
 				@Override
@@ -2799,7 +2847,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		
 		if(e.getSource() == exit) {
 			
-			
+			jPanel.setVisible(true);
 			int result = JOptionPane.showConfirmDialog(null, "Do you want to Exit ?", "EXIT APP", JOptionPane.YES_NO_OPTION ,JOptionPane.INFORMATION_MESSAGE);
 			
 			if(result == JOptionPane.YES_OPTION) {
