@@ -2,10 +2,13 @@ package gniot_library;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 @SuppressWarnings("serial")
@@ -13,14 +16,28 @@ public class Welcome_Screen extends JFrame {
 	
 	public Welcome_Screen() {
 		
+		
+//		setResizable(false);
 		setVisible(true);
-		setResizable(false);
-		setBounds(200, 100, 700, 500);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setForeground(Color.RED);
+		setBounds(400, 100, 700, 500);
+		setLayout(new BorderLayout());
+		setTitle("Welcome To Gniot ");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		JInternalFrame jInternalFrame = new JInternalFrame();
+		jInternalFrame.setBackground(Color.CYAN);
+		jInternalFrame.setVisible(true);
+		add(jInternalFrame, BorderLayout.CENTER);
 		
-		
+		JPanel jLabel1 = new JPanel();
+		jLabel1.setSize(MAXIMIZED_HORIZ, 20);
+		JLabel title = new JLabel();
+		title.setFont(new Font("aerial", Font.BOLD, 15));
+		title.setText("Welcome To Gniot Library");
+		jLabel1.setBackground(Color.RED);
+		jLabel1.add(title);
+		add(jLabel1,BorderLayout.PAGE_START);
+
 		JProgressBar jBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
 		jBar.setStringPainted(true);
 		jBar.setString("AWANISH WELCOMES YOU TO GNIOT LIBRARY.....");
@@ -29,10 +46,10 @@ public class Welcome_Screen extends JFrame {
 		add(jBar, BorderLayout.PAGE_END);
 		
 		
+//		jLabel1.setVisible(false);
 		ImageIcon icon = new ImageIcon("D:\\\\new\\\\gniot-logo.jpg");
 		JLabel jLabel = new JLabel(icon, JLabel.CENTER);
-		
-		add(jLabel, BorderLayout.CENTER);
+		jInternalFrame.add(jLabel, BorderLayout.CENTER);
 		
 //		jLabel.setIcon(icon);
 		
@@ -53,6 +70,8 @@ public class Welcome_Screen extends JFrame {
 			
 			
 		}
+		
+		validate();
 		
 		dispose();
 		new LoginAsk_Screen();
