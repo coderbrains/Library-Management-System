@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.swing.*;
 
@@ -19,37 +20,48 @@ public class LoginPage extends JFrame{
 	public LoginPage() {	
 
 
-		Container container = getContentPane();
-		setTitle("Login Page");
-		container.setLayout(null);
+		setResizable(false);
+		setTitle("Student Login Page");
+		setLayout(new BorderLayout());
+		setBounds(400, 200, 500, 300);
+		setLayout(new BorderLayout());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JPanel jPanel = new JPanel();
+		jPanel.setBackground(Color.cyan);
+		add(jPanel, BorderLayout.CENTER);
+		jPanel.setLayout(null);
+		
 		Cursor cursor = new Cursor(Cursor.TEXT_CURSOR);
 		
 		JLabel jLabel = new JLabel();
 		jLabel.setText("User_Name - ");
+		
 		jLabel.setBounds(100, 30, 200, 40);
-		container.add(jLabel);
+		jPanel.add(jLabel);
 		
 		jTextField = new JTextField();
 		jTextField.setBounds(203, 35, 200, 30);
 		jTextField.setCursor(cursor);
-		container.add(jTextField);
+		jPanel.add(jTextField);
 		
 		
 		JLabel jLabel1 = new JLabel();
 		jLabel1.setText("Password -  ");
 		jLabel1.setBounds(100, 94, 200, 40);
-		container.add(jLabel1);
+		jPanel.add(jLabel1);
 		
 		jTextField1 = new JPasswordField();
 		jTextField1.setBounds(203, 99, 200, 30);
 		jTextField1.setEchoChar('*');
 		jTextField1.setCursor(cursor);
-		container.add(jTextField1);		
+		jPanel.add(jTextField1);		
 		
 		JCheckBox jCheckBox = new JCheckBox();
 		jCheckBox.setText("Show Password");
-		jCheckBox.setBounds(203, 135, 300, 20);
-		container.add(jCheckBox);
+		jCheckBox.setBounds(203, 135, 200, 20);
+		jPanel.add(jCheckBox);
+		
 		jCheckBox.addItemListener(new ItemListener() {
 			
 			@Override
@@ -63,18 +75,15 @@ public class LoginPage extends JFrame{
 			}
 		});
 		
-		JLabel jLabel2 = new JLabel();
-		jLabel2.setText("Login Required");
-		jLabel2.setBounds(150, 200, 190, 60);
-		container.add(jLabel2);
 		
 		
 		JButton jButton = new JButton();
 		jButton.setText("Login");
 		Cursor cursor1 = new Cursor(Cursor.HAND_CURSOR);
 		jButton.setCursor(cursor1);
-		jButton.setBounds(100, 160, 100, 30);
-		container.add(jButton);
+		jButton.setBounds(70, 200, 150, 30);
+		jButton.setBackground(Color.MAGENTA);
+		jPanel.add(jButton);
 		
 		
 		jButton.addActionListener(new ActionListener() {
@@ -131,31 +140,75 @@ public class LoginPage extends JFrame{
 			}
 		});
 		
-		JButton back = new JButton("Back");
-		back.setBounds(220, 160, 100, 30);
-		add(back);
+		JButton back = new JButton("Forgot Password");
+		back.setBounds(250,200, 150, 30);
+		back.setBackground(Color.MAGENTA);
+		jPanel.add(back);
 		
 		back.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				dispose();
-				new LoginAsk_Screen();
+				String e_mail = JOptionPane.showInputDialog("Enter Your Email Id :");
+				if(e_mail.length() == 0) {
+					JOptionPane.showMessageDialog(null, "No E-mail is entered");
+				}else {
+					
+					try {
+						
+						
+						Class.forName("com.mysql.cj.jdbc.Driver");
+						Login_through_credentails l = new Login_through_credentails();
+						Connection c = DriverManager.getConnection(l.url,l.user, l.pass);
+						
+						 String query = "select * from staff where email =  '" + e_mail + "'";
+						 
+						 Statement st = c.createStatement();
+						 
+						 ResultSet rs = st.executeQuery(query);
+						 
+						 if(rs.next()) {
+							 
+							 String password = JOptionPane.showInputDialog("Enter Your Password :");
+								
+								if(password.length() < 8) {
+									JOptionPane.showMessageDialog(null, "Password must contain 8 letters");
+								}else {
+									
+									query = "update staff set password = ? where email = ? ";
+									 PreparedStatement pst = c.prepareStatement(query);
+									 
+									 pst.setString(1, password);
+									 pst.setString(2, e_mail);
+									 
+									 pst.executeUpdate();
+									 
+									 JOptionPane.showMessageDialog(null, "SuccessFully changed");
+								}
+							 
+							 
+						 }else {
+							 JOptionPane.showMessageDialog(null, "This E-mail is not registerd yet");
+						 }
+						
+					}catch(Exception AE) {
+						JOptionPane.showMessageDialog(null, "Some Error occured please try after sometime.");
+					}
+					
+				}
 				
 			}
 		});
 		
 		setVisible(true);
-		setSize(300, 300);
-		setResizable(false);
-		setBounds(200, 200, 500, 300);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		revalidate();
 	}
+
 	
-	public static void main(String[] args) {
-		
-		new LoginPage();
-	}
+//	public static void main(String[] args) {
+//		
+//		new LoginPage();
+//	}
 
 }
