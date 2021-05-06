@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import javax.swing.*;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
+import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
 public class Staff_Login_After_Page extends JFrame implements ActionListener{
@@ -36,12 +37,37 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 	JCheckBox box;
 	JButton button;
 	
+	DefaultTableModel model = null;
+	
 	JInternalFrame jInternalFrame = null;
 	
 	//<------------ End
 	
 	//Constructor Starts ---------->
-	public Staff_Login_After_Page() {
+	public Staff_Login_After_Page(int id) {
+		
+		try {
+			
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Login_through_credentails  l = new Login_through_credentails();
+			Connection c1 = DriverManager.getConnection(l.url,l.user, l.pass);
+			
+			String query = "select name from staff where id = " + id;
+			Statement st = c1.createStatement();
+		
+			ResultSet rs = st.executeQuery(query);
+			rs.next();
+			setTitle("Hello "+rs.getString("name"));
+			c1.close();
+			st.close();
+			
+		}catch(Exception E) {
+			setTitle("Hello Student");
+			JOptionPane.showMessageDialog(null, "Title cannot be set");
+		}
+		
+		
+		
 		
 		c = getContentPane();
 		
@@ -83,23 +109,16 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		exit.setFont(f);
 		
 		addStudent.setBackground(Color.CYAN);
-		addStudent.setForeground(Color.WHITE);
+//		addStudent.setForeground(Color.WHITE);
 		removeStudent.setBackground(Color.CYAN);
-		removeStudent.setForeground(Color.WHITE);
+//		removeStudent.setForeground(Color.WHITE);
 		issueBook.setBackground(Color.CYAN);
-		issueBook.setForeground(Color.WHITE);
+//		issueBook.setForeground(Color.WHITE);
 		removeBook.setBackground(Color.CYAN);
-		removeBook.setForeground(Color.WHITE);
+//		removeBook.setForeground(Color.WHITE);
 		exit.setBackground(Color.CYAN);
-		exit.setForeground(Color.WHITE);
+//		exit.setForeground(Color.WHITE);
 		addStudent.setBackground(Color.CYAN);
-		addStudent.setForeground(Color.WHITE);
-		addStudent.setBackground(Color.CYAN);
-		addStudent.setForeground(Color.WHITE);
-		addStudent.setBackground(Color.CYAN);
-		addStudent.setForeground(Color.WHITE);
-		addStudent.setBackground(Color.CYAN);
-		addStudent.setForeground(Color.WHITE);
 		
 		
 		
@@ -148,9 +167,8 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 		image.setBounds(420, 100, 500, 500);
 		jPanel.add(image);
 		
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setBounds(-8, -3, 1380, 745);
 		setVisible(true);
-		setTitle("Hello Staff");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -163,7 +181,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 
 	public static void main(String[] args) {
 		
-		new Staff_Login_After_Page();
+		new Staff_Login_After_Page(2);
 
 	}
 	//<----------------------Main function ends
@@ -1668,15 +1686,13 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				
 				@Override
 				public void internalFrameClosing(InternalFrameEvent e) {
-					// TODO Auto-generated method stub
-					seeAll.setVisible(true);
 					
 				}
 				
 				@Override
 				public void internalFrameClosed(InternalFrameEvent e) {
-					seeAll.setEnabled(true);
 					jPanel.setVisible(true);
+					seeAll.setEnabled(true);
 				}
 				
 				@Override
@@ -1685,11 +1701,12 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 						
 					Font font = new Font("aerial", Font.CENTER_BASELINE, 18);
 					
+					jInternalFrame.setLayout(new BorderLayout());
+					
 					JPanel jPanel = new JPanel();
 					jPanel.setLayout(new GridLayout(7,1));
-					jPanel.setBounds(0, 0, 280, 638);
 					jPanel.setBackground(Color.WHITE);
-					jInternalFrame.add(jPanel);
+					jInternalFrame.add(jPanel, BorderLayout.WEST);
 					
 					JButton seeStudent = new JButton();
 					seeStudent.setText("STUDENTS");
@@ -1737,15 +1754,43 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 				    
 				    
 				    JList<String> jList = new JList<String>();
-					JPanel jPanel1 = new JPanel();
-					jPanel1.setLayout(new GridLayout(1,1));
-					jPanel1.setBounds(280, 0, 1074,  638);
-					jPanel1.add(new JScrollPane(jList));
-					jInternalFrame.add(jPanel1);
-					
+//					JPanel jPanel1 = new JPanel();
+//					jPanel1.setLayout(new GridLayout(1,1));
+//					jPanel1.setBounds(280, 0, 1074,  638);
+//					jPanel1.add(new JScrollPane(jList));
+//					jInternalFrame.add(jPanel1);
+//					
 					DefaultListModel<String> dModel = new DefaultListModel<>();
 					jList.setFont(font);
 					
+					
+					model = new DefaultTableModel();
+				        
+				        
+
+				//DefaultTableModel model = new DefaultTableModel(tm.getData1(), tm.getColumnNames());
+
+				//table = new JTable(model);
+				        
+				      JTable table  = new JTable();
+
+				        table.setModel(model);
+
+				        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+				        table.setFillsViewportHeight(true);
+
+				        JScrollPane scroll = new JScrollPane(table);
+
+				        scroll.setHorizontalScrollBarPolicy(
+
+				                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+				        scroll.setVerticalScrollBarPolicy(
+
+				                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+					
+					jInternalFrame.add(scroll, BorderLayout.CENTER);
 					
 					
 					seeStudent.addActionListener(new ActionListener() {
@@ -1754,6 +1799,16 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 						public void actionPerformed(ActionEvent e) {
 							
 							try {
+								
+								
+								model = new DefaultTableModel();
+								
+								table.setModel(model);
+								
+								String[] columnNames = {"Student ID", "Student Name ", "Email", "Password",
+										"Mobile No", "Gender", "Date of Birth", "Address"};
+
+						        model.setColumnIdentifiers(columnNames);
 								
 								Class.forName("com.mysql.cj.jdbc.Driver");
 								Login_through_credentails l = new Login_through_credentails();
@@ -1775,16 +1830,9 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 									String gender = rs.getString("gender");
 									String date_birth = rs.getString("Death_of_Birth");
 									String address = rs.getString("address");
-									dModel.add(0, "ID - " +id);
-									dModel.add(1, "Name -  " + name);
-									dModel.add(2, "Email - " + email);
-									dModel.add(3, "Password -"+ pass);
-									dModel.add(4, "Mobile - " +  mobile);
-									dModel.add(5, "Gender - " +  gender);
-									dModel.add(6, "Date of Birth - " + date_birth);
-									dModel.add(7, "Address - " + address);
-									dModel.add(8, "\n");
-									jList.setModel(dModel);
+//								
+									
+									model.addRow(new Object[] {id,name, email, pass, mobile, gender, date_birth,address});
 									
 									}
 
@@ -1809,6 +1857,14 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 							
 							try {
 								
+								model = new DefaultTableModel();
+								table.setModel(model);
+								String[] columnNames = {"Book ID", "Book Name ", "Author Name", "ISBN NO","Publisher", "Price"};
+									
+
+						        model.setColumnIdentifiers(columnNames);
+								
+								
 								Class.forName("com.mysql.cj.jdbc.Driver");
 								Login_through_credentails l = new Login_through_credentails();
 								
@@ -1828,14 +1884,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 									String mobile = rs.getString("publisher");
 									int gender = rs.getInt("price");
 									
-									dModel.add(0, "ID - " +id);
-									dModel.add(1, "Book Name -  " + name);
-									dModel.add(2, "Author  - " + email);
-									dModel.add(3, "ISBN -"+ pass);
-									dModel.add(4, "Publisher - " +  mobile);
-									dModel.add(5, "Price - " +  gender);
-									dModel.add(6, "\n");
-									jList.setModel(dModel);
+									model.addRow(new Object[] {id, name,email, pass,mobile,gender});
 									
 									}
 
@@ -1861,6 +1910,13 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 							
 							try {
 								
+								model = new DefaultTableModel();
+								table.setModel(model);
+								String[] columnNames = {"Student ID", "Student Name ", "Book ID", "Actual Return Date","Expected Returned Date", "No of Days delay"
+										,"Fine Amount"};
+									
+						        model.setColumnIdentifiers(columnNames);
+								
 								Class.forName("com.mysql.cj.jdbc.Driver");
 								Login_through_credentails l = new Login_through_credentails();
 								
@@ -1884,22 +1940,10 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 									String mobile = rs.getString("Number_of_days_late");
 									int gender = rs.getInt("fine_amount");
 									fine_amount = fine_amount + gender;
-									dModel.add(0, "BOOK-ID - " +id);
-									dModel.add(1, "STUDENT NAME - " + student_name);
-									dModel.add(2, "STUDENT ID -  " + name);
-									dModel.add(3, "ACTUAL RETURN DATE - " + email);
-									dModel.add(4, "EXPECTED RETURN DATE -"+ pass);
-									dModel.add(5, "NUMBER OF DAYS LATE - " +  mobile);
-									dModel.add(6, "FINE AMOUNTS - " +  gender);
-									dModel.add(7, "\n");
-									jList.setModel(dModel);
+									
+									model.addRow(new Object[] {id, student_name, name, email, pass, mobile, gender, fine_amount});
 									
 									}
-								
-									dModel.add(0, "\n" + "Hello, Staff The total Amount of fine to be collected is : " + fine_amount + "\n" + "\n" + "\n");
-									
-									jList.setModel(dModel);
-
 
 									c.close();
 									st.close();
@@ -1923,6 +1967,13 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 							
 							try {
 								
+								model = new DefaultTableModel();
+								table.setModel(model);
+								String[] columnNames = {"Student ID", "Student Name ", "Book Id", "Book Name", "Issue Date","Return Date"};
+									
+
+						        model.setColumnIdentifiers(columnNames);
+								
 								Class.forName("com.mysql.cj.jdbc.Driver");
 								Login_through_credentails l = new Login_through_credentails();
 								
@@ -1944,14 +1995,7 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 									String email = rs.getString("issue_book.return_date");
 									String pass = rs.getString("issue_book.issue_date");
 									
-									dModel.add(0, "BOOK-ID - " + book_id);
-									dModel.add(1, "BOOK NAME - " + book_name);
-									dModel.add(2, "STUDENT ID - " + student_id);
-									dModel.add(3, "STUDENT NAME -  " + student_name);
-									dModel.add(4, "RETURN DATE - " + email);
-									dModel.add(5, "ISSUE DATE -" + pass);
-									dModel.add(6, "\n");
-									jList.setModel(dModel);
+									model.addRow(new Object[] {student_id, student_name, book_id, book_name, pass,email});
 									
 									}
 								
@@ -1980,10 +2024,15 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 							
 							try {	
 								
-									dModel.add(0, "FAQ IS NOT AVAILABEL");
+								model = new DefaultTableModel();
+								table.setModel(model);
+								String[] columnNames = {"Questions", "Answers"};
+									
+
+						        model.setColumnIdentifiers(columnNames);
 								
-									jList.setModel(dModel);									
-									jList.setModel(dModel);
+						        model.addRow(new Object[] {"There is no questions regarding the Software", "No answers available"});
+								
 
 
 																	
@@ -1999,14 +2048,17 @@ public class Staff_Login_After_Page extends JFrame implements ActionListener{
 						
 						@Override
 						public void actionPerformed(ActionEvent e) {
+
+
+							model = new DefaultTableModel();
+							table.setModel(model);
+							String[] columnNames = {"Name", "Mobile", "Whatsapp", "Email"};
+								
+
+					        model.setColumnIdentifiers(columnNames);
 							
-							dModel.add(0, "Name - Awanish Kumar Singh");
-							dModel.add(1, "Mobile - 9102504188");
-							dModel.add(2, "Whatsapp - 9102504188");
-							dModel.add(3, "E-mail - awanishkumarsingh03@gmail.com");
-							dModel.add(4, "YouTube - Coder Brains");
-							jList.setModel(dModel);									
-							jList.setModel(dModel);
+					        model.addRow(new Object[] {"Awanish Kumar Singh", "9102504188", "9102504188", "awanishkumarsingh03@gmail.com"});
+							
 
 							
 						}
