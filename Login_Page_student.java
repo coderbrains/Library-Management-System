@@ -222,12 +222,12 @@ public class Login_Page_student extends JFrame{
 		revalidate();
 	}
 
-	public static void main(String[] args) {
-		
-		
-		new Login_Page_student();
-
-
-	}
+//	public static void main(String[] args) {
+//		
+//		
+//		new Login_Page_student();
+//
+//
+//	}
 
 }
