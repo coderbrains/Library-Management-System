@@ -21,7 +21,7 @@ public class LoginPage extends JFrame{
 
 
 		setResizable(false);
-		setTitle("Student Login Page");
+		setTitle("Staff Login Page");
 		setLayout(new BorderLayout());
 		setBounds(400, 200, 500, 300);
 		setLayout(new BorderLayout());
@@ -108,11 +108,12 @@ public class LoginPage extends JFrame{
 					
 					jTextField.setText(null);
 					jTextField1.setText(null);
-					
+					int id = 0;
 					ResultSet rs = st.executeQuery();
 					boolean found = false;
 					while(rs.next()) {
 						String user1 = rs.getString(3);
+						id = rs.getInt("id");
 						String pass = rs.getString(4);
 						if(username.equals(user1) && passw.equals(pass)) {
 							found = true;
@@ -126,7 +127,7 @@ public class LoginPage extends JFrame{
 						
 						dispose();
 						Thread.sleep(500);
-						new Staff_Login_After_Page();
+						new Staff_Login_After_Page(id);
 						
 					}
 					
