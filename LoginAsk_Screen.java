@@ -24,11 +24,14 @@ public class LoginAsk_Screen extends JFrame implements ActionListener{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setBounds(300, 150, 700, 500);
+		setTitle("Login Ask Screen");
 		
 		JInternalFrame jInternalFrame = new JInternalFrame();
 		jInternalFrame.setVisible(true);
 		jInternalFrame.setLayout(new BorderLayout());
 		add(jInternalFrame, BorderLayout.CENTER);
+		jInternalFrame.setTitle("Welcome");
+		
 		
 		JPanel jLabel = new JPanel();
 		jLabel.setLayout(new GridLayout(3,1));
@@ -42,7 +45,7 @@ public class LoginAsk_Screen extends JFrame implements ActionListener{
 		jInternalFrame.add(jLabel2, BorderLayout.CENTER);
 		
 	
-		ImageIcon icon = new ImageIcon("D:\\\\new\\\\download.jpg");
+		ImageIcon icon = new ImageIcon("D:\\New folder\\JAVA PROJECTS\\java programs\\librarySystem\\src\\gniot_library\\download.jpg");
 		JLabel jLabel3 =  new JLabel(icon, JLabel.CENTER);
 		jLabel3.setSize(MAXIMIZED_VERT,MAXIMIZED_HORIZ);
 		jLabel2.add(jLabel3, BorderLayout.CENTER);
@@ -67,6 +70,10 @@ public class LoginAsk_Screen extends JFrame implements ActionListener{
 		JButton jPanel = new JButton();
 		jInternalFrame.add(jPanel, BorderLayout.PAGE_END);
 		
+		Font f = new Font("aerial", Font.BOLD, 15);
+		j1.setFont(f);
+		j2.setFont(f);
+		j.setFont(f);
 		
 		jLabel.add(j1);
 		jLabel.add(j2);
@@ -74,14 +81,15 @@ public class LoginAsk_Screen extends JFrame implements ActionListener{
 		
 		j.addActionListener(this);
 		j1.addActionListener(this);
+		j2.addActionListener(this);
 		
 		setVisible(true);
 		
 	}
 	
-	public static void main(String[] a) {
-		new LoginAsk_Screen();
-	}
+//	public static void main(String[] a) {
+//		new LoginAsk_Screen();
+//	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -95,6 +103,11 @@ public class LoginAsk_Screen extends JFrame implements ActionListener{
 		if(e.getSource() == j1) {
 			dispose();
 			new Login_Page_student();
+		}
+		
+		if(e.getSource() == j2) {
+			dispose();
+			new Student_Entry_Exit();
 		}
 	}
 }
