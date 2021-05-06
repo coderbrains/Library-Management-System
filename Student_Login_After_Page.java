@@ -39,8 +39,24 @@ public class Student_Login_After_Page extends JFrame implements ActionListener{
 	JInternalFrame jInternalFrame = null;
 	public Student_Login_After_Page(int id ) {
 
+		try {
+			
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Login_through_credentails  l = new Login_through_credentails();
+			Connection c1 = DriverManager.getConnection(l.url,l.user, l.pass);
+			
+			String query = "select name from student where id = " + id;
+			Statement st = c1.createStatement();
+		
+			ResultSet rs = st.executeQuery(query);
+			rs.next();
+			setTitle("Hello "+rs.getString("name"));
+			
+		}catch(Exception E) {
+			setTitle("Hello Student");
+			JOptionPane.showMessageDialog(null, "Title cannot be set");
+		}
 		setVisible(true);
-		setTitle("Hello Student ");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setBounds(-7, 0, 1379, 740);
@@ -89,6 +105,8 @@ public class Student_Login_After_Page extends JFrame implements ActionListener{
 		logout.setFont(font);
 		
 		
+		
+		
 		jMenuBar.add(seeAcount);
 		jMenuBar.add(mobileChange);
 		jMenuBar.add(seeBookAllotment);
@@ -130,6 +148,9 @@ public class Student_Login_After_Page extends JFrame implements ActionListener{
 				c.add(jInternalFrame, BorderLayout.CENTER);
 
 				
+				
+				
+				
 				JList<String> jList = new JList<String>();
 				JPanel jPanel1 = new JPanel();
 				jPanel1.setLayout(new GridLayout(1,1));
@@ -152,9 +173,9 @@ public class Student_Login_After_Page extends JFrame implements ActionListener{
 					Statement st = c.createStatement();
 					
 					ResultSet rs = st.executeQuery(query);
-			
+					int number = 0;
 					while(rs.next()) {
-						
+						number++;
 						dModel.add(0, ">>");
 						dModel.add(1, "\nBook id - " + rs.getInt("issue_book.book_id"));
 						dModel.add(2,  "Book Name - " + rs.getString("name"));
@@ -168,6 +189,8 @@ public class Student_Login_After_Page extends JFrame implements ActionListener{
 						jList.setModel(dModel);
 					}
 					
+					dModel.add(0, "The total  number of books alloted are : " + number);
+					jList.setModel(dModel);
 					
 					c.close();
 					st.close();
@@ -399,7 +422,7 @@ public class Student_Login_After_Page extends JFrame implements ActionListener{
 									
 									st.executeUpdate();
 									
-									JOptionPane.showMessageDialog(null, "Successfull...");
+									JOptionPane.showMessageDialog(null, "Mobile Number Successfully Changed...");
 
 									c.close();
 									st.close();
@@ -527,16 +550,17 @@ public class Student_Login_After_Page extends JFrame implements ActionListener{
 		validate();
 	}
 
-	public static void main(String[] args) {
-		new Student_Login_After_Page(16);
-
-	}
+//	public static void main(String[] args) {
+//		new Student_Login_After_Page(16);
+//
+//	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == logout) {
-		int result = 	JOptionPane.showConfirmDialog(null, "Do you want to Exit", "Sure", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION, null);
+		
+			int result = JOptionPane.showConfirmDialog(null, "Do you want to Exit", "Log-out Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if(result == JOptionPane.YES_OPTION) {
 				dispose();
 				new Login_Page_student();
