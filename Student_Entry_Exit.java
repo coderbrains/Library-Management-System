@@ -393,7 +393,7 @@ public class Student_Entry_Exit extends JFrame implements ActionListener{
 							
 							
 						}else {
-							JOptionPane.showMessageDialog(null, "The Id is not available in the database");
+							JOptionPane.showMessageDialog(null, "This student is admitted to the library");
 						}
 					}catch(Exception E) {
 						
