@@ -28,6 +28,7 @@ public class Welcome_Screen extends JFrame {
 		jInternalFrame.setBackground(Color.CYAN);
 		jInternalFrame.setVisible(true);
 		add(jInternalFrame, BorderLayout.CENTER);
+		jInternalFrame.setTitle("Worlds Largest Library Welcomes You");
 		
 		JPanel jLabel1 = new JPanel();
 		jLabel1.setSize(MAXIMIZED_HORIZ, 20);
@@ -47,7 +48,7 @@ public class Welcome_Screen extends JFrame {
 		
 		
 //		jLabel1.setVisible(false);
-		ImageIcon icon = new ImageIcon("D:\\\\new\\\\gniot-logo.jpg");
+		ImageIcon icon = new ImageIcon("D:\\New folder\\JAVA PROJECTS\\java programs\\librarySystem\\src\\gniot_library\\gniot-logo.jpg");
 		JLabel jLabel = new JLabel(icon, JLabel.CENTER);
 		jInternalFrame.add(jLabel, BorderLayout.CENTER);
 		
