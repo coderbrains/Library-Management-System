@@ -9,11 +9,11 @@ The main objective of making this Java project is to customize the employees num
 
 ***
 
-You can See the full working of this application on my own youtube channel named as coder brains.<a href="https://appetize.io/app/06wpw6dgrdg02v042qxrcjt1y8?device=nexus5&scale=100&orientation=portrait&osVersion=7.1&deviceColor=black">here</a>.
+You can See the full working of this application on my own youtube channel named as coder brains.<a href="https://www.youtube.com/watch?v=gKK_8ICDExI">here</a>.
 
 
 <h3>YouTube Demo</h3>
-<a href="https://www.youtube.com/channel/UC4CwQWuy47lTFP8-RhtF8lw"><img src="https://i.ytimg.com/an_webp/ryXfexI1fRQ/mqdefault_6s.webp?du=3000&sqp=CKzSzoQG&rs=AOn4CLBoSE-om_HliqGfvE97QbKz2ju70A" 
+<a href="https://www.youtube.com/watch?v=gKK_8ICDExI"><img src="https://i.ytimg.com/an_webp/gKK_8ICDExI/mqdefault_6s.webp?du=3000&sqp=CIyx04QG&rs=AOn4CLB4OPoaCbcxEuwm23q8Uv8nn1FRrw" 
 alt="Shuffler Demo" width="240" height="180" border="10" /></a>
 
 ***
